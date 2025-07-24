@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guhso Podcast</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-logo">GUHSO</div>
+        <ul class="nav-links">
+            <li><a href="#episodes">Episodes</a></li>
+            <li><a href="#it-guhso">It Guhso</a></li>
+            <li><a href="#tech">Tech</a></li>
+        </ul>
+        <button class="donate-btn">Donate</button>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Section -->
+        <div class="left-section">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <!-- Using a data URL for a gradient image fallback -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1080' height='800'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FF6B35;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23F7931E;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1080' height='800' fill='url(%23g)' /%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='48' fill='white' opacity='0.3'%3EEpisode Thumbnail%3C/text%3E%3C/svg%3E" alt="Episode Thumbnail" class="hero-thumbnail">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <h1 class="hero-title">The Future of Podcasting</h1>
+                    <div class="hero-meta">
+                        <span>Episode 42</span>
+                        <span>•</span>
+                        <span>Season 3</span>
+                        <span>•</span>
+                        <span>John Doe</span>
+                    </div>
+                    <div class="hashtags">
+                        <span class="hashtag">#podcasting</span>
+                        <span class="hashtag">#technology</span>
+                        <span class="hashtag">#future</span>
+                        <span class="hashtag">#audio</span>
+                    </div>
+                    <div class="glass-player">
+                        <div class="player-controls">
+                            <button class="player-btn">
+                                <i class="fas fa-backward"></i>
+                            </button>
+                            <button class="player-btn play-btn" onclick="toggleFloatingPlayer()">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="player-btn">
+                                <i class="fas fa-forward"></i>
+                            </button>
+                        </div>
+                        <div class="player-progress">
+                            <span class="time-display">2:45</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                            <span class="time-display">32:10</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Column Section -->
+            <div class="two-column-section">
+                <div class="text-column">
+                    <h2>About This Episode</h2>
+                    <p>Join us as we explore the evolving landscape of podcasting, discussing the latest trends, technologies, and what the future holds for content creators and listeners alike. Our special guest shares insights from their journey in the industry.</p>
+                    <br>
+                    <p>We dive deep into topics including monetization strategies, audience engagement, and the impact of AI on content creation. Whether you're a seasoned podcaster or just starting out, this episode has valuable insights for everyone.</p>
+                </div>
+                <div class="episode-cards-container">
+                    <div class="episode-cards">
+                        <div class="episode-card">
+                            <div class="episode-card-content">
+                                <h3>Building Your Audience</h3>
+                                <p>Episode 41 • 28 min</p>
+                            </div>
+                        </div>
+                        <div class="episode-card">
+                            <div class="episode-card-content">
+                                <h3>Content Strategy Tips</h3>
+                                <p>Episode 40 • 35 min</p>
+                            </div>
+                        </div>
+                        <div class="episode-card">
+                            <div class="episode-card-content">
+                                <h3>Interview Techniques</h3>
+                                <p>Episode 39 • 42 min</p>
+                            </div>
+                        </div>
+                        <div class="episode-card">
+                            <div class="episode-card-content">
+                                <h3>Equipment Essentials</h3>
+                                <p>Episode 38 • 30 min</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Section -->
+        <div class="right-section">
+            <!-- Featured Section -->
+            <div class="featured-section">
+                <div class="featured-slider">
+                    <div class="featured-card">
+                        <div>
+                            <h3>Featured Show</h3>
+                            <h2>Tech Talks Daily</h2>
+                            <p>Your daily dose of tech news and insights</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="featured-nav">
+                    <span class="featured-dot active"></span>
+                    <span class="featured-dot"></span>
+                    <span class="featured-dot"></span>
+                </div>
+            </div>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search episodes...">
+                </div>
+                <div class="popular-hashtags">
+                    <h3>Popular Tags</h3>
+                    <div class="hashtag-cloud">
+                        <span class="hashtag-item">#technology</span>
+                        <span class="hashtag-item">#business</span>
+                        <span class="hashtag-item">#startup</span>
+                        <span class="hashtag-item">#ai</span>
+                        <span class="hashtag-item">#design</span>
+                        <span class="hashtag-item">#marketing</span>
+                        <span class="hashtag-item">#productivity</span>
+                        <span class="hashtag-item">#innovation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Player Bar -->
+    <div class="floating-player" id="floatingPlayer">
+        <div class="floating-player-info">
+            <div class="floating-thumbnail"></div>
+            <div>
+                <h4>The Future of Podcasting</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Episode 42</p>
+            </div>
+        </div>
+        <div class="floating-player-controls">
+            <button class="player-btn">
+                <i class="fas fa-backward"></i>
+            </button>
+            <button class="player-btn play-btn">
+                <i class="fas fa-pause"></i>
+            </button>
+            <button class="player-btn">
+                <i class="fas fa-forward"></i>
+            </button>
+            <div class="player-progress" style="max-width: 400px;">
+                <span class="time-display">2:45</span>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 15%;"></div>
+                </div>
+                <span class="time-display">32:10</span>
+            </div>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+            <button class="player-btn">
+                <i class="fas fa-volume-up"></i>
+            </button>
+            <button class="player-btn">
+                <i class="fas fa-list"></i>
+            </button>
+        </div>
+    </div>
+  <!--  scripts  -->
+  <script src="assets/js/scripts.js" type="text/javascript"></script>
+</body>
+
+</html>
