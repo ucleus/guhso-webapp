@@ -1,0 +1,310 @@
+/* src/components/Episodes/EpisodeCardsContainer.css */
+
+.episode-cards-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 1rem 0;
+    cursor: grab;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) var(--light-bg);
+    position: relative;
+}
+
+.episode-cards-container:active {
+    cursor: grabbing;
+}
+
+/* Custom scrollbar for WebKit browsers */
+.episode-cards-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.episode-cards-container::-webkit-scrollbar-track {
+    background: var(--light-bg);
+    border-radius: 4px;
+    margin: 0 1rem;
+}
+
+.episode-cards-container::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.episode-cards-container::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* Hide scrollbar on mobile for cleaner look */
+@media (max-width: 768px) {
+    .episode-cards-container {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .episode-cards-container::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.episode-cards {
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    min-width: min-content;
+    transition: transform 0.2s ease-out;
+}
+
+/* Smooth scroll behavior */
+.episode-cards-container {
+    scroll-behavior: smooth;
+}
+
+/* Fade edges for better visual indication of scroll */
+.episode-cards-container::before,
+.episode-cards-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 1rem; /* Account for padding-bottom */
+    width: 2rem;
+    pointer-events: none;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+}
+
+.episode-cards-container::before {
+    left: 0;
+    background: linear-gradient(
+        to right,
+        var(--light-bg) 0%,
+        rgba(42, 42, 42, 0.8) 50%,
+        transparent 100%
+    );
+    opacity: 0;
+}
+
+.episode-cards-container::after {
+    right: 0;
+    background: linear-gradient(
+        to left,
+        var(--light-bg) 0%,
+        rgba(42, 42, 42, 0.8) 50%,
+        transparent 100%
+    );
+}
+
+/* Show left fade when scrolled */
+.episode-cards-container.scrolled-left::before {
+    opacity: 1;
+}
+
+/* Hide right fade when scrolled to end */
+.episode-cards-container.scrolled-right::after {
+    opacity: 0;
+}
+
+/* Loading state */
+.episode-cards-container.loading .episode-cards {
+    animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Empty state */
+.episode-cards-container.empty {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.episode-cards-container.empty::before,
+.episode-cards-container.empty::after {
+    display: none;
+}
+
+.empty-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.empty-message i {
+    font-size: 3rem;
+    color: var(--text-muted);
+    opacity: 0.5;
+}
+
+.empty-message h3 {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 1.2rem;
+}
+
+.empty-message p {
+    margin: 0;
+    font-size: 0.9rem;
+    max-width: 300px;
+    line-height: 1.4;
+}
+
+/* Navigation arrows (optional enhancement) */
+.episode-cards-container.with-arrows {
+    position: relative;
+}
+
+.scroll-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    z-index: 3;
+    opacity: 0;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.episode-cards-container:hover .scroll-arrow {
+    opacity: 1;
+}
+
+.scroll-arrow:hover {
+    background: rgba(255, 107, 53, 0.2);
+    border-color: var(--primary-color);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.scroll-arrow.left {
+    left: 0.5rem;
+}
+
+.scroll-arrow.right {
+    right: 0.5rem;
+}
+
+.scroll-arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Smooth momentum scrolling on iOS */
+.episode-cards-container {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Focus management for accessibility */
+.episode-cards-container:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.episode-cards-container:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Drag selection prevention */
+.episode-cards-container {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Container spacing adjustments */
+.episode-cards-container {
+    margin: 0 -0.5rem; /* Negative margin to align with container edges */
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .episode-cards {
+        gap: 0.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .episode-cards-container {
+        padding: 0.8rem 0;
+        margin: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    .episode-cards {
+        gap: 0.75rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        padding-bottom: 0.8rem;
+    }
+    
+    .episode-cards-container::before,
+    .episode-cards-container::after {
+        width: 1.5rem;
+    }
+    
+    .scroll-arrow {
+        display: none; /* Hide arrows on mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .episode-cards {
+        gap: 0.5rem;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .episode-cards-container::-webkit-scrollbar-thumb {
+        background: var(--text-light);
+    }
+    
+    .scroll-arrow {
+        background: var(--dark-bg);
+        border: 2px solid var(--text-light);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .episode-cards-container {
+        scroll-behavior: auto;
+    }
+    
+    .episode-cards {
+        transition: none;
+    }
+    
+    .scroll-arrow {
+        transition: none;
+    }
+    
+    .episode-cards-container::before,
+    .episode-cards-container::after {
+        transition: none;
+    }
+}

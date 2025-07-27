@@ -1,0 +1,450 @@
+/* src/components/Layout/Navbar.css */
+.navbar {
+    position: sticky;
+    top: 0;
+    background-color: var(--light-bg);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+.nav-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+.nav-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+.donate-btn {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.3s;
+}
+
+.donate-btn:hover {
+    transform: scale(1.05);
+}
+
+/* src/components/Hero/HeroSection.css */
+.hero-section {
+    position: relative;
+    width: 100%;
+    min-height: 600px;
+    background: linear-gradient(135deg, #FF6B35, #F7931E, #FF6B35);
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: flex-end;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.hero-thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.9;
+    z-index: 1;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);
+    z-index: 2;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    padding: 3rem;
+    width: 100%;
+    color: white;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.hashtags {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.hashtag {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    backdrop-filter: blur(10px);
+}
+
+/* src/components/Player/PlayerControls.css */
+.glass-player {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.player-controls-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.player-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.player-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.player-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.play-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+}
+
+.player-progress {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
+}
+
+.progress-fill {
+    height: 100%;
+    background: white;
+    border-radius: 2px;
+    width: 30%;
+    transition: width 0.3s;
+}
+
+.time-display {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* src/components/Layout/TwoColumnSection.css */
+.two-column-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* src/components/Layout/TextColumn.css */
+.text-column {
+    padding: 2rem;
+    background: var(--light-bg);
+    border-radius: 16px;
+}
+
+.text-column h2 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.text-column p {
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+/* src/components/Episodes/EpisodeCardsContainer.css */
+.episode-cards-container {
+    overflow-x: auto;
+    padding: 1rem 0;
+    cursor: grab;
+}
+
+.episode-cards-container:active {
+    cursor: grabbing;
+}
+
+.episode-cards {
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 1rem;
+}
+
+/* src/components/Episodes/EpisodeCard.css */
+.episode-card {
+    min-width: 250px;
+    height: 150px;
+    background: var(--light-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s;
+    position: relative;
+}
+
+.episode-card:hover {
+    transform: scale(1.05);
+}
+
+.episode-card-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.episode-card-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+}
+
+.episode-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+}
+
+.episode-card p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* src/components/Sidebar/Sidebar.css */
+.right-section {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* src/components/Sidebar/FeaturedSection.css */
+.featured-section {
+    background: var(--light-bg);
+    border-radius: 16px;
+    padding: 1.5rem;
+    height: 350px;
+}
+
+.featured-slider {
+    position: relative;
+    height: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.featured-card {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    display: flex;
+    align-items: flex-end;
+    padding: 1.5rem;
+    color: white;
+}
+
+.featured-nav {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.featured-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.featured-dot.active {
+    background: var(--primary-color);
+    width: 20px;
+    border-radius: 4px;
+}
+
+/* src/components/Sidebar/SearchSection.css */
+.search-section {
+    background: var(--light-bg);
+    border-radius: 16px;
+    padding: 1.5rem;
+}
+
+.search-bar {
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    background: var(--dark-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.popular-hashtags {
+    margin-top: 1.5rem;
+}
+
+.popular-hashtags h3 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.hashtag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.hashtag-item {
+    background: var(--dark-bg);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 1px solid transparent;
+}
+
+.hashtag-item:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* src/components/Player/FloatingPlayer.css */
+.floating-player {
+    position: fixed;
+    bottom: -100px;
+    left: 0;
+    right: 0;
+    background: var(--light-bg);
+    padding: 1rem 2rem;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    transition: bottom 0.3s;
+    z-index: 1001;
+}
+
+.floating-player.active {
+    bottom: 0;
+}
+
+.floating-player-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 0 0 300px;
+}
+
+.floating-thumbnail {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    background: var(--primary-color);
+    background-size: cover;
+    background-position: center;
+}
+
+.floating-player-controls {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    justify-content: center;
+}

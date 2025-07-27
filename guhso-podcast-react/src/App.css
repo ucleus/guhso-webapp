@@ -1,0 +1,80 @@
+/* src/App.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #FF6B35;
+    --secondary-color: #F7931E;
+    --dark-bg: #1a1a1a;
+    --light-bg: #2a2a2a;
+    --text-light: #ffffff;
+    --text-muted: #b0b0b0;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: var(--dark-bg);
+    color: var(--text-light);
+    overflow-x: hidden;
+    height: 100vh;
+    overflow-y: hidden;
+}
+
+.App {
+    width: 100%;
+    height: 100vh;
+}
+
+/* Main Container */
+.main-container {
+    display: flex;
+    height: calc(100vh - 70px);
+    padding: 2rem;
+    gap: 2rem;
+    overflow: hidden;
+}
+
+/* Left Section */
+.left-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+
+.left-section::-webkit-scrollbar {
+    width: 8px;
+}
+
+.left-section::-webkit-scrollbar-track {
+    background: var(--light-bg);
+    border-radius: 4px;
+}
+
+.left-section::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .main-container {
+        flex-direction: column;
+    }
+    
+    .right-section {
+        width: 100%;
+        flex-direction: row;
+    }
+    
+    .two-column-section {
+        grid-template-columns: 1fr;
+    }
+}
