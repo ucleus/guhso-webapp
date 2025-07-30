@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\QueryException;
 
 class RegisterController extends Controller
 {
@@ -69,9 +70,15 @@ class RegisterController extends Controller
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
             ]);
-            
+
             session()->flash('success', 'Registration successful! Welcome to Guhso.');
             return $user;
+        } catch (QueryException $e) {
+            $message = $e->getCode() === '23000'
+                ? 'This email is already registered.'
+                : 'A database error occurred. Please try again later.';
+            session()->flash('error', $message);
+            throw $e;
         } catch (\Exception $e) {
             session()->flash('error', 'Registration failed: ' . $e->getMessage());
             throw $e;

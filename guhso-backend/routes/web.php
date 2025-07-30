@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\ShowController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\QueryException;
 
 // Redirect root to dashboard for authenticated users, or login for guests
 Route::get('/', function () {
@@ -26,40 +28,43 @@ Route::get('register', function () {
 
 Route::post('register', function (Illuminate\Http\Request $request) {
     \Log::info('Registration attempt started', ['data' => $request->all()]);
-    
-    // Validate the request
-    try {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-        \Log::info('Validation passed');
-    } catch (\Exception $e) {
-        \Log::error('Validation failed', ['error' => $e->getMessage()]);
-        return back()->withErrors($e->validator)->withInput();
+
+    $validator = Validator::make($request->all(), [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ]);
+
+    if ($validator->fails()) {
+        \Log::warning('Validation failed', ['errors' => $validator->errors()]);
+        return back()
+            ->withErrors($validator)
+            ->withInput()
+            ->with('error', 'Please correct the errors below.');
     }
 
     try {
         \Log::info('Attempting to create user');
-        
-        // Create the user
+
         $user = \App\Models\User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => \Illuminate\Support\Facades\Hash::make($request->password),
         ]);
-        
-        \Log::info('User created successfully', ['user_id' => $user->id]);
 
-        // Log the user in
         \Illuminate\Support\Facades\Auth::login($user);
-        \Log::info('User logged in');
+        \Log::info('User created and logged in', ['user_id' => $user->id]);
 
         return redirect('/dashboard')->with('success', 'Registration successful! Welcome to Guhso.');
+    } catch (QueryException $e) {
+        \Log::error('Database error during registration', ['error' => $e->getMessage()]);
+        $message = $e->getCode() === '23000'
+            ? 'This email is already registered.'
+            : 'A database error occurred. Please try again later.';
+        return back()->with('error', $message)->withInput();
     } catch (\Exception $e) {
-        \Log::error('Registration failed', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-        return back()->with('error', 'Registration failed: ' . $e->getMessage())->withInput();
+        \Log::error('Registration failed', ['error' => $e->getMessage()]);
+        return back()->with('error', 'Registration failed. Please try again.')->withInput();
     }
 });
 
