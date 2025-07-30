@@ -38,7 +38,7 @@ class RouteServiceProvider extends ServiceProvider
             ->group(base_path('routes/web.php'));
 
             // Add this for admin routes if you create a separate file
-            Route::middleware(['web', 'auth'])
+            Route::middleware(['web', 'auth', 'admin'])
                 ->namespace('App\Http\Controllers\Admin')
                 ->prefix('admin')
                 ->group(base_path('routes/admin.php'));
