@@ -20,48 +20,8 @@ Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 // Registration Routes
-Route::get('register', function () {
-    return view('auth.register');
-})->name('register');
-
-Route::post('register', function (Illuminate\Http\Request $request) {
-    \Log::info('Registration attempt started', ['data' => $request->all()]);
-    
-    // Validate the request
-    try {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-        \Log::info('Validation passed');
-    } catch (\Exception $e) {
-        \Log::error('Validation failed', ['error' => $e->getMessage()]);
-        return back()->withErrors($e->validator)->withInput();
-    }
-
-    try {
-        \Log::info('Attempting to create user');
-        
-        // Create the user
-        $user = \App\Models\User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => \Illuminate\Support\Facades\Hash::make($request->password),
-        ]);
-        
-        \Log::info('User created successfully', ['user_id' => $user->id]);
-
-        // Log the user in
-        \Illuminate\Support\Facades\Auth::login($user);
-        \Log::info('User logged in');
-
-        return redirect('/dashboard')->with('success', 'Registration successful! Welcome to Guhso.');
-    } catch (\Exception $e) {
-        \Log::error('Registration failed', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-        return back()->with('error', 'Registration failed: ' . $e->getMessage())->withInput();
-    }
-});
+Route::get('register', [\App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('register', [\App\Http\Controllers\Auth\RegisterController::class, 'register']);
 
 // Dashboard Routes (protected by auth middleware)
 Route::middleware('auth')->group(function () {
