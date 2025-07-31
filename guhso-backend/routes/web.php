@@ -22,10 +22,9 @@ Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 // Registration Routes
-<<<<<<< HEAD
 Route::get('register', [\App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('register', [\App\Http\Controllers\Auth\RegisterController::class, 'register']);
-=======
+
 Route::get('register', function () {
     return view('auth.register');
 })->name('register');
@@ -71,7 +70,6 @@ Route::post('register', function (Illuminate\Http\Request $request) {
         return back()->with('error', 'Registration failed. Please try again.')->withInput();
     }
 });
->>>>>>> faf9b945d30c623817a3f3085a0eb690da5f5c13
 
 // Dashboard Routes (protected by auth middleware)
 Route::middleware('auth')->group(function () {
