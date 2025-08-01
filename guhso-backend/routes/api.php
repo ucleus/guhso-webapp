@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ShowController as ApiShowController;
 use App\Http\Controllers\Api\EpisodeController as ApiEpisodeController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\SearchController; 
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,14 @@ Route::prefix('v1')->group(function () {
     // Search endpoints
     Route::get('/search', [SearchController::class, 'api']);
     Route::get('/popular-tags', [SearchController::class, 'popularTags']);
+
+    // Blog posts
+    Route::get('/posts', [PostController::class, 'index']);
+    Route::get('/posts/featured', [PostController::class, 'featured']);
+    Route::post('/posts', [PostController::class, 'store']);
+    Route::get('/posts/{post}', [PostController::class, 'show']);
+    Route::put('/posts/{post}', [PostController::class, 'update']);
+    Route::delete('/posts/{post}', [PostController::class, 'destroy']);
     
     // Categories for navigation
     Route::get('/categories', function() {
