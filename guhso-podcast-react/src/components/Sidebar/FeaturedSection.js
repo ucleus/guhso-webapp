@@ -1,34 +1,25 @@
 // src/components/Sidebar/FeaturedSection.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { fetchFeaturedPosts } from '../../api';
 import './FeaturedSection.css';
 
 const FeaturedSection = () => {
   const [activeDot, setActiveDot] = useState(0);
-  
-  const featuredItems = [
-    {
-      id: 1,
-      title: "Featured Show",
-      name: "Tech Talks Daily",
-      description: "Your daily dose of tech news and insights"
-    },
-    {
-      id: 2,
-      title: "Trending",
-      name: "Design Weekly",
-      description: "Latest trends in UI/UX design"
-    },
-    {
-      id: 3,
-      title: "Popular",
-      name: "Business Insights",
-      description: "Entrepreneurship and startup stories"
-    }
-  ];
+  const [featuredItems, setFeaturedItems] = useState([]);
+
+  useEffect(() => {
+    fetchFeaturedPosts()
+      .then(setFeaturedItems)
+      .catch((err) => console.error(err));
+  }, []);
 
   const handleDotClick = (index) => {
     setActiveDot(index);
   };
+
+  if (!featuredItems.length) {
+    return null;
+  }
 
   return (
     <div className="featured-section">
