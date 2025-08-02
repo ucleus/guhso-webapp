@@ -5,6 +5,11 @@ export async function fetchFeaturedPosts() {
   return res.json();
 }
 
+export async function fetchPosts() {
+  const res = await fetch(`${API_URL}/posts`);
+  return res.json();
+}
+
 export async function createPost(post) {
   const res = await fetch(`${API_URL}/posts`, {
     method: 'POST',

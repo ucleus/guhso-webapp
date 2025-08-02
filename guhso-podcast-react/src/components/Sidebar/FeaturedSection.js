@@ -21,14 +21,15 @@ const FeaturedSection = () => {
     return null;
   }
 
+  const activePost = featuredItems[activeDot];
+
   return (
     <div className="featured-section">
       <div className="featured-slider">
         <div className="featured-card">
           <div>
-            <h3>{featuredItems[activeDot].title}</h3>
-            <h2>{featuredItems[activeDot].name}</h2>
-            <p>{featuredItems[activeDot].description}</p>
+            <h3>{activePost.title}</h3>
+            <p>{activePost.body}</p>
           </div>
         </div>
       </div>

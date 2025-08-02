@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { createPost } from '../../api';
 
-const PostForm = () => {
+const PostForm = ({ onPostCreated }) => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [isFeatured, setIsFeatured] = useState(false);
@@ -10,10 +10,13 @@ const PostForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createPost({ title, body, is_featured: isFeatured });
+      const newPost = await createPost({ title, body, is_featured: isFeatured });
       setTitle('');
       setBody('');
       setIsFeatured(false);
+      if (onPostCreated) {
+        onPostCreated(newPost);
+      }
       alert('Post created');
     } catch (err) {
       console.error(err);
