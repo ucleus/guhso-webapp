@@ -41,6 +41,9 @@
                 <a href="{{ route('dashboard.episodes') }}" class="nav-link {{ request()->routeIs('dashboard.episodes') ? 'active' : '' }}">
                     <i class="fas fa-play-circle"></i> Episodes
                 </a>
+                <a href="{{ route('dashboard.posts') }}" class="nav-link {{ request()->routeIs('dashboard.posts*') ? 'active' : '' }}">
+                    <i class="fas fa-blog"></i> Posts
+                </a>
                 <a href="{{ route('dashboard.users') }}" class="nav-link {{ request()->routeIs('dashboard.users') ? 'active' : '' }}">
                     <i class="fas fa-users"></i> Users
                 </a>
