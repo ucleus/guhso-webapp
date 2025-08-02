@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\ShowController;
+use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -85,6 +86,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/shows', [DashboardController::class, 'shows'])->name('dashboard.shows');
     Route::get('/dashboard/episodes', [DashboardController::class, 'episodes'])->name('dashboard.episodes');
+    Route::get('/dashboard/posts', [PostController::class, 'index'])->name('dashboard.posts');
+    Route::get('/dashboard/posts/create', [PostController::class, 'create'])->name('dashboard.posts.create');
+    Route::post('/dashboard/posts', [PostController::class, 'store'])->name('dashboard.posts.store');
     Route::get('/dashboard/users', [DashboardController::class, 'users'])->name('dashboard.users');
 });
 

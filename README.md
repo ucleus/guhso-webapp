@@ -28,6 +28,7 @@
 - ❤️ **Favorites System** - Save and organize your preferred episodes
 - 💬 **Comments** - Engage with content and community
 - 📝 **Blog Integration** - Rich content beyond just audio
+- ✍️ **Blog Management** - Create and publish posts from the dashboard
 
 ---
 
