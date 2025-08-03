@@ -23,6 +23,7 @@ Route::prefix('v1')->group(function () {
     // Featured content for React hero section
     Route::get('/featured/episode', [ApiEpisodeController::class, 'featured']);
     Route::get('/featured/show', [ApiShowController::class, 'featured']);
+    Route::get('/featured/episodes', [ApiEpisodeController::class, 'featuredSidebar']);
     
     // Search endpoints
     Route::get('/search', [SearchController::class, 'api']);

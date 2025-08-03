@@ -20,7 +20,7 @@ export async function fetchHeroEpisode() {
 
 // Posts API (keeping existing functionality)
 export async function fetchFeaturedPosts() {
-  const res = await fetch(`${API_URL}/posts/featured`);
+  const res = await fetch(`${API_URL}/featured/episodes`);
   return res.json();
 }
 

@@ -91,6 +91,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/episodes/{episode}/upload-thumbnail', [DashboardController::class, 'uploadThumbnail'])->name('dashboard.episodes.upload-thumbnail');
     Route::post('/dashboard/episodes/sync-rss', [DashboardController::class, 'syncEpisodesFromRSS'])->name('dashboard.episodes.sync');
     Route::post('/dashboard/episodes/{episode}/toggle-hero', [DashboardController::class, 'toggleHero'])->name('dashboard.episodes.toggle-hero');
+    Route::post('/dashboard/episodes/{episode}/toggle-featured-sidebar', [DashboardController::class, 'toggleFeaturedSidebar'])->name('dashboard.episodes.toggle-featured-sidebar');
     // Posts management routes
     Route::get('/dashboard/posts', [PostController::class, 'index'])->name('dashboard.posts');
     Route::get('/dashboard/posts/create', [PostController::class, 'create'])->name('dashboard.posts.create');

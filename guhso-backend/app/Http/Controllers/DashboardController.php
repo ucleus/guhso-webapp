@@ -260,4 +260,27 @@ class DashboardController extends Controller
             ]);
         }
     }
+
+    public function toggleFeaturedSidebar(Episode $episode)
+    {
+        try {
+            // Toggle the current episode's featured sidebar status
+            $episode->is_featured_sidebar = !$episode->is_featured_sidebar;
+            $episode->save();
+            
+            return response()->json([
+                'success' => true,
+                'episode' => $episode,
+                'message' => $episode->is_featured_sidebar 
+                    ? 'Episode added to featured sidebar successfully!' 
+                    : 'Episode removed from featured sidebar successfully!'
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to toggle featured sidebar status: ' . $e->getMessage()
+            ]);
+        }
+    }
 }

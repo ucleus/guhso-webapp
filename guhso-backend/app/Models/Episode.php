@@ -42,6 +42,7 @@ class Episode extends Model
         'thumbnail_url',
         'is_published',
         'is_featured',
+        'is_featured_sidebar',
         'is_manual',
         'premium_required',
         'min_subscription_tier',

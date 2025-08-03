@@ -205,6 +205,14 @@
                             <span id="heroText-{{ $episode->id }}">{{ $episode->is_featured ? 'Hero' : 'Set Hero' }}</span>
                         </button>
                         
+                        <!-- Featured Sidebar Toggle Button -->
+                        <button onclick="toggleFeaturedSidebar('{{ $episode->id }}')" 
+                                id="sidebarBtn-{{ $episode->id }}"
+                                class="sidebar-toggle-btn {{ $episode->is_featured_sidebar ? 'sidebar-active' : 'sidebar-inactive' }} px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 hover:scale-105">
+                            <i id="sidebarIcon-{{ $episode->id }}" class="fas {{ $episode->is_featured_sidebar ? 'fa-bookmark' : 'fa-bookmark-o' }} mr-1"></i>
+                            <span id="sidebarText-{{ $episode->id }}">{{ $episode->is_featured_sidebar ? 'Featured' : 'Feature' }}</span>
+                        </button>
+                        
                         <a href="{{ route('dashboard.episodes.edit', $episode) }}" class="p-2 text-gray-500 hover:text-blue-600 transition-colors" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
@@ -403,6 +411,49 @@ function formatTime(seconds) {
     }
 }
 
+// Featured Sidebar toggle functionality
+function toggleFeaturedSidebar(episodeId) {
+    const button = document.getElementById(`sidebarBtn-${episodeId}`);
+    const icon = document.getElementById(`sidebarIcon-${episodeId}`);
+    const text = document.getElementById(`sidebarText-${episodeId}`);
+    
+    // Show loading state
+    const originalButton = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Loading...';
+    button.disabled = true;
+    
+    fetch(`/dashboard/episodes/${episodeId}/toggle-featured-sidebar`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update this episode's button
+            const isFeatured = data.episode.is_featured_sidebar;
+            button.className = `sidebar-toggle-btn ${isFeatured ? 'sidebar-active' : 'sidebar-inactive'} px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 hover:scale-105`;
+            icon.className = `fas ${isFeatured ? 'fa-bookmark' : 'fa-bookmark-o'} mr-1`;
+            text.textContent = isFeatured ? 'Featured' : 'Feature';
+            
+            // Show success message
+            showNotification(data.message, 'success');
+        } else {
+            showNotification(data.message || 'Failed to update featured status', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error toggling featured sidebar status:', error);
+        showNotification('Failed to update featured status', 'error');
+    })
+    .finally(() => {
+        button.innerHTML = originalButton;
+        button.disabled = false;
+    });
+}
+
 // Hero toggle functionality
 function toggleHero(episodeId) {
     const button = document.getElementById(`heroBtn-${episodeId}`);
@@ -579,6 +630,42 @@ document.addEventListener('DOMContentLoaded', function() {
 .hero-toggle-btn.hero-active:hover {
     background: linear-gradient(45deg, #ffed4e, #ffd700);
     box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+}
+
+/* Featured Sidebar toggle button styles */
+.sidebar-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    font-weight: 500;
+}
+
+.sidebar-toggle-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.sidebar-toggle-btn.sidebar-inactive {
+    background-color: #6366f1;
+    color: white;
+    border: 1px solid #818cf8;
+}
+
+.sidebar-toggle-btn.sidebar-inactive:hover {
+    background-color: #4f46e5;
+    color: #e0e7ff;
+}
+
+.sidebar-toggle-btn.sidebar-active {
+    background: linear-gradient(45deg, #8b5cf6, #a78bfa);
+    color: white;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+}
+
+.sidebar-toggle-btn.sidebar-active:hover {
+    background: linear-gradient(45deg, #7c3aed, #8b5cf6);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
 }
 </style>
 @endsection

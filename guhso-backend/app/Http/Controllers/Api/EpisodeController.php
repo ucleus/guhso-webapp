@@ -125,4 +125,28 @@ class EpisodeController extends Controller
             'episode' => $episode->load('show')
         ]);
     }
+
+    public function featuredSidebar()
+    {
+        // Get episodes marked for sidebar featuring
+        $featuredEpisodes = Episode::where('is_published', true)
+            ->where('is_featured_sidebar', true)
+            ->with('show')
+            ->latest('published_at')
+            ->take(5)
+            ->get()
+            ->map(function ($episode) {
+                return [
+                    'id' => $episode->id,
+                    'title' => $episode->title,
+                    'body' => $episode->description ? substr($episode->description, 0, 200) . '...' : 'No description available',
+                    'slug' => $episode->slug ?? $episode->id,
+                    'published_at' => $episode->published_at,
+                    'thumbnail_url' => $episode->thumbnail_url,
+                    'show' => $episode->show
+                ];
+            });
+
+        return response()->json($featuredEpisodes);
+    }
 }
