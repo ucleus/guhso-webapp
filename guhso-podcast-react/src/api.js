@@ -1,5 +1,34 @@
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/v1';
 
+// Episodes API
+export async function fetchEpisodes() {
+  const res = await fetch(`${API_URL}/episodes`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch episodes: ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function fetchHeroEpisode() {
+  const res = await fetch(`${API_URL}/featured/episode`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch hero episode: ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function toggleEpisodeHero(episodeId) {
+  const res = await fetch(`${API_URL}/episodes/${episodeId}/toggle-hero`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to toggle hero status: ${res.status}`);
+  }
+  return res.json();
+}
+
+// Posts API (keeping existing functionality)
 export async function fetchFeaturedPosts() {
   const res = await fetch(`${API_URL}/posts/featured`);
   return res.json();

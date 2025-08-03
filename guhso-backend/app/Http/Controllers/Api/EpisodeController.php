@@ -43,12 +43,21 @@ class EpisodeController extends Controller
 
     public function featured()
     {
-        $latestEpisode = Episode::where('is_published', true)
+        // Try to get the episode marked as featured/hero first
+        $featuredEpisode = Episode::where('is_published', true)
+            ->where('is_featured', 1)
             ->with('show')
-            ->latest('published_at')
             ->first();
 
-        return response()->json($latestEpisode);
+        // If no featured episode, fall back to the latest episode
+        if (!$featuredEpisode) {
+            $featuredEpisode = Episode::where('is_published', true)
+                ->with('show')
+                ->latest('published_at')
+                ->first();
+        }
+
+        return response()->json($featuredEpisode);
     }
 
     public function store(Request $request)
@@ -96,5 +105,24 @@ class EpisodeController extends Controller
     {
         $episode->delete();
         return response()->json(['message' => 'Episode deleted successfully']);
+    }
+
+    public function toggleHero(Episode $episode)
+    {
+        // If this episode is being set as hero, remove hero status from all other episodes
+        if (!$episode->is_featured) {
+            Episode::where('is_featured', 1)->update(['is_featured' => 0]);
+            $episode->update(['is_featured' => 1]);
+            $message = 'Episode set as hero successfully';
+        } else {
+            // Remove hero status from this episode
+            $episode->update(['is_featured' => 0]);
+            $message = 'Hero status removed from episode';
+        }
+
+        return response()->json([
+            'message' => $message,
+            'episode' => $episode->load('show')
+        ]);
     }
 }

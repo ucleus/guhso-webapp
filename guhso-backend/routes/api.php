@@ -17,6 +17,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/shows/{show}/episodes', [ApiShowController::class, 'episodes']);
     Route::get('/episodes', [ApiEpisodeController::class, 'index']);
     Route::get('/episodes/{episode}', [ApiEpisodeController::class, 'show']);
+    Route::put('/episodes/{episode}/toggle-hero', [ApiEpisodeController::class, 'toggleHero']);
     Route::get('/episodes/{episode}/comments', [CommentController::class, 'index']);
     
     // Featured content for React hero section

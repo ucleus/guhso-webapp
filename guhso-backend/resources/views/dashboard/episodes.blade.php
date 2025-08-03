@@ -197,6 +197,14 @@
                     
                     <!-- Actions -->
                     <div class="flex space-x-2">
+                        <!-- Hero Toggle Button -->
+                        <button onclick="toggleHero('{{ $episode->id }}')" 
+                                id="heroBtn-{{ $episode->id }}"
+                                class="hero-toggle-btn {{ $episode->is_featured ? 'hero-active' : 'hero-inactive' }} px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 hover:scale-105">
+                            <i id="heroIcon-{{ $episode->id }}" class="fas {{ $episode->is_featured ? 'fa-star' : 'fa-star-o' }} mr-1"></i>
+                            <span id="heroText-{{ $episode->id }}">{{ $episode->is_featured ? 'Hero' : 'Set Hero' }}</span>
+                        </button>
+                        
                         <button class="p-2 text-gray-500 hover:text-blue-600 transition-colors" title="Edit">
                             <i class="fas fa-edit"></i>
                         </button>
@@ -395,6 +403,82 @@ function formatTime(seconds) {
     }
 }
 
+// Hero toggle functionality
+function toggleHero(episodeId) {
+    const button = document.getElementById(`heroBtn-${episodeId}`);
+    const icon = document.getElementById(`heroIcon-${episodeId}`);
+    const text = document.getElementById(`heroText-${episodeId}`);
+    
+    // Show loading state
+    const originalButton = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Loading...';
+    button.disabled = true;
+    
+    fetch(`/api/v1/episodes/${episodeId}/toggle-hero`, {
+        method: 'PUT',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            // Update this episode's button
+            const isHero = data.episode.is_featured;
+            button.className = `hero-toggle-btn ${isHero ? 'hero-active' : 'hero-inactive'} px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 hover:scale-105`;
+            icon.className = `fas ${isHero ? 'fa-star' : 'fa-star-o'} mr-1`;
+            text.textContent = isHero ? 'Hero' : 'Set Hero';
+            
+            // If this episode became hero, update all other episodes to not be hero
+            if (isHero) {
+                document.querySelectorAll('[id^="heroBtn-"]').forEach(btn => {
+                    if (btn.id !== `heroBtn-${episodeId}`) {
+                        const btnIcon = btn.querySelector('i');
+                        const btnText = btn.querySelector('span');
+                        btn.className = 'hero-toggle-btn hero-inactive px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 hover:scale-105';
+                        if (btnIcon) btnIcon.className = 'fas fa-star-o mr-1';
+                        if (btnText) btnText.textContent = 'Set Hero';
+                    }
+                });
+            }
+            
+            // Show success message
+            showNotification(data.message, 'success');
+        }
+    })
+    .catch(error => {
+        console.error('Error toggling hero status:', error);
+        showNotification('Failed to update hero status', 'error');
+    })
+    .finally(() => {
+        button.innerHTML = originalButton;
+        button.disabled = false;
+    });
+}
+
+// Simple notification function
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 ${
+        type === 'success' ? 'bg-green-500 text-white' : 
+        type === 'error' ? 'bg-red-500 text-white' : 
+        'bg-blue-500 text-white'
+    }`;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => notification.style.transform = 'translateX(0)', 10);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => document.body.removeChild(notification), 300);
+    }, 3000);
+}
+
 // Store original durations when page loads
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('[id^="durationBadge-"]').forEach(badge => {
@@ -459,6 +543,42 @@ document.addEventListener('DOMContentLoaded', function() {
     border: 2px solid #3b82f6;
     border-radius: 50%;
     animation: pulse-ring 1.5s infinite;
+}
+
+/* Hero toggle button styles */
+.hero-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    font-weight: 500;
+}
+
+.hero-toggle-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.hero-toggle-btn.hero-inactive {
+    background-color: #6b7280;
+    color: white;
+    border: 1px solid #9ca3af;
+}
+
+.hero-toggle-btn.hero-inactive:hover {
+    background-color: #4b5563;
+    color: #ffd700;
+}
+
+.hero-toggle-btn.hero-active {
+    background: linear-gradient(45deg, #ffd700, #ffed4e);
+    color: #1f2937;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+}
+
+.hero-toggle-btn.hero-active:hover {
+    background: linear-gradient(45deg, #ffed4e, #ffd700);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
 }
 </style>
 @endsection

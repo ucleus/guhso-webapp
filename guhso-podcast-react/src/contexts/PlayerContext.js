@@ -21,14 +21,69 @@ export const PlayerProvider = ({ children }) => {
   const [volume, setVolume] = useState(1);
   const audioRef = useRef(null);
 
-  const playEpisode = (episode) => {
+  const playEpisode = async (episode) => {
+    // If same episode is already loaded, just toggle play/pause
+    if (currentEpisode && currentEpisode.id === episode.id) {
+      if (isPlaying) {
+        pauseEpisode();
+      } else {
+        resumeEpisode();
+      }
+      return;
+    }
+    
+    // Load new episode
     setCurrentEpisode(episode);
-    setIsPlaying(true);
     setIsFloatingPlayerVisible(true);
     
     if (audioRef.current) {
-      audioRef.current.src = episode.audioUrl;
-      audioRef.current.play();
+      // Pause current audio before loading new one
+      if (!audioRef.current.paused) {
+        audioRef.current.pause();
+      }
+      
+      // Only change src if it's different (compare absolute URLs)
+      const currentSrc = audioRef.current.src;
+      const newSrc = new URL(episode.audioUrl, window.location.origin).href;
+      
+      if (currentSrc !== newSrc) {
+        audioRef.current.src = episode.audioUrl;
+        
+        // Wait for the audio to be ready before playing
+        try {
+          await new Promise((resolve, reject) => {
+            const loadHandler = () => {
+              audioRef.current.removeEventListener('canplaythrough', loadHandler);
+              audioRef.current.removeEventListener('error', errorHandler);
+              resolve();
+            };
+            const errorHandler = (e) => {
+              audioRef.current.removeEventListener('canplaythrough', loadHandler);
+              audioRef.current.removeEventListener('error', errorHandler);
+              reject(e);
+            };
+            
+            audioRef.current.addEventListener('canplaythrough', loadHandler);
+            audioRef.current.addEventListener('error', errorHandler);
+            audioRef.current.load();
+          });
+          
+          await audioRef.current.play();
+          setIsPlaying(true);
+        } catch (error) {
+          console.error('Error playing audio:', error);
+          setIsPlaying(false);
+        }
+      } else {
+        // Same src, just play
+        try {
+          await audioRef.current.play();
+          setIsPlaying(true);
+        } catch (error) {
+          console.error('Error playing audio:', error);
+          setIsPlaying(false);
+        }
+      }
     }
   };
 
@@ -39,10 +94,15 @@ export const PlayerProvider = ({ children }) => {
     }
   };
 
-  const resumeEpisode = () => {
-    setIsPlaying(true);
+  const resumeEpisode = async () => {
     if (audioRef.current) {
-      audioRef.current.play();
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (error) {
+        console.error('Error resuming audio:', error);
+        setIsPlaying(false);
+      }
     }
   };
 
