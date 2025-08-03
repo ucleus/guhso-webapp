@@ -1,41 +1,17 @@
 // src/components/Episodes/EpisodeCard.js
-import { useState } from 'react';
 import { usePlayer } from '../../contexts/PlayerContext';
-import { toggleEpisodeHero } from '../../api';
 import './EpisodeCard.css';
 
-const EpisodeCard = ({ episode, onHeroToggle }) => {
+const EpisodeCard = ({ episode }) => {
   const { playEpisode, currentEpisode, isPlaying } = usePlayer();
-  const [isTogglingHero, setIsTogglingHero] = useState(false);
 
-  const handleCardClick = (e) => {
-    // Don't play if clicking on hero toggle button
-    if (e.target.closest('.hero-toggle-btn')) {
-      return;
-    }
-    
+  const handleCardClick = () => {
     playEpisode({
       id: episode.id,
       title: episode.title,
       audioUrl: episode.audio_url,
       thumbnailUrl: episode.thumbnail_url || episode.itunes_image
     });
-  };
-
-  const handleHeroToggle = async (e) => {
-    e.stopPropagation();
-    setIsTogglingHero(true);
-    
-    try {
-      await toggleEpisodeHero(episode.id);
-      if (onHeroToggle) {
-        onHeroToggle(episode.id);
-      }
-    } catch (error) {
-      console.error('Failed to toggle hero status:', error);
-    } finally {
-      setIsTogglingHero(false);
-    }
   };
 
   // Check if this episode is currently playing
@@ -78,15 +54,6 @@ const EpisodeCard = ({ episode, onHeroToggle }) => {
         <div className="episode-show">
           {episode.show?.title && <span>{episode.show.title}</span>}
         </div>
-        <button 
-          className={`hero-toggle-btn ${isHeroEpisode ? 'hero-active' : 'hero-inactive'}`}
-          onClick={handleHeroToggle}
-          disabled={isTogglingHero}
-          title={isHeroEpisode ? 'Remove from Hero' : 'Set as Hero'}
-        >
-          <i className={`fas ${isTogglingHero ? 'fa-spinner fa-spin' : (isHeroEpisode ? 'fa-star' : 'fa-star-o')} mr-1`}></i>
-          <span>{isTogglingHero ? 'Loading...' : (isHeroEpisode ? 'Hero' : 'Set Hero')}</span>
-        </button>
       </div>
     </div>
   );

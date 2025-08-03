@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import EpisodeCard from './EpisodeCard';
 import './EpisodeCardsContainer.css';
 
-const EpisodeCardsContainer = ({ episodes, onHeroToggle }) => {
+const EpisodeCardsContainer = ({ episodes }) => {
   const containerRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -45,7 +45,6 @@ const EpisodeCardsContainer = ({ episodes, onHeroToggle }) => {
           <EpisodeCard 
             key={episode.id} 
             episode={episode}
-            onHeroToggle={onHeroToggle}
           />
         ))}
       </div>

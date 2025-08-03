@@ -17,16 +17,6 @@ export async function fetchHeroEpisode() {
   return res.json();
 }
 
-export async function toggleEpisodeHero(episodeId) {
-  const res = await fetch(`${API_URL}/episodes/${episodeId}/toggle-hero`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-  });
-  if (!res.ok) {
-    throw new Error(`Failed to toggle hero status: ${res.status}`);
-  }
-  return res.json();
-}
 
 // Posts API (keeping existing functionality)
 export async function fetchFeaturedPosts() {
