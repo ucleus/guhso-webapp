@@ -113,10 +113,18 @@
                 
                 <!-- Play Button Overlay -->
                 <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-                    <button class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
-                        <i class="fas fa-play text-gray-800 text-xl ml-1"></i>
+                    <button onclick="togglePlay('{{ $episode->id }}')" 
+                            id="playBtn-{{ $episode->id }}" 
+                            class="play-button w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg transition-all duration-200">
+                        <i id="playIcon-{{ $episode->id }}" class="fas fa-play text-gray-800 text-xl ml-1"></i>
                     </button>
                 </div>
+                
+                <!-- Audio Element (hidden) -->
+                <audio id="audio-{{ $episode->id }}" preload="none" class="hidden">
+                    <source src="{{ $episode->audio_url }}" type="{{ $episode->audio_type ?? 'audio/mpeg' }}">
+                    Your browser does not support the audio element.
+                </audio>
                 
                 <!-- Episode Number Badge -->
                 <div class="absolute top-4 left-4">
@@ -127,9 +135,14 @@
                 
                 <!-- Duration Badge -->
                 <div class="absolute top-4 right-4">
-                    <span class="bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
-                        {{ $episode->duration ?? $episode->itunes_duration ?? '30:00' }}
+                    <span id="durationBadge-{{ $episode->id }}" class="bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
+                        {{ $episode->itunes_duration ?? '30:00' }}
                     </span>
+                </div>
+                
+                <!-- Audio Progress Bar (initially hidden) -->
+                <div id="progressBar-{{ $episode->id }}" class="absolute bottom-0 left-0 right-0 h-2 bg-gray-900 bg-opacity-60 hidden">
+                    <div id="progress-{{ $episode->id }}" class="audio-progress-bar h-full transition-all duration-200" style="width: 0%"></div>
                 </div>
             </div>
             
@@ -230,6 +243,9 @@
 </div>
 
 <script>
+// Global audio player state
+let currentlyPlaying = null;
+
 function refreshFromRSS() {
     // Show loading state
     const button = event.target.closest('button');
@@ -237,7 +253,6 @@ function refreshFromRSS() {
     button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Syncing...';
     button.disabled = true;
     
-    // Simulate RSS sync (replace with actual implementation)
     fetch('/dashboard/episodes/sync-rss', {
         method: 'POST',
         headers: {
@@ -262,6 +277,130 @@ function refreshFromRSS() {
         button.disabled = false;
     });
 }
+
+function togglePlay(episodeId) {
+    const audio = document.getElementById(`audio-${episodeId}`);
+    const playIcon = document.getElementById(`playIcon-${episodeId}`);
+    const playBtn = document.getElementById(`playBtn-${episodeId}`);
+    const progressBar = document.getElementById(`progressBar-${episodeId}`);
+    const progress = document.getElementById(`progress-${episodeId}`);
+    const durationBadge = document.getElementById(`durationBadge-${episodeId}`);
+    
+    // Stop any currently playing audio
+    if (currentlyPlaying && currentlyPlaying !== episodeId) {
+        pauseEpisode(currentlyPlaying);
+    }
+    
+    if (audio.paused) {
+        // Play audio
+        audio.play().then(() => {
+            playIcon.className = 'fas fa-pause text-gray-800 text-xl';
+            progressBar.classList.remove('hidden');
+            currentlyPlaying = episodeId;
+            
+            // Add visual feedback to episode card
+            const episodeCard = playBtn.closest('.bg-white');
+            if (episodeCard) {
+                episodeCard.classList.add('audio-playing', 'episode-card');
+            }
+            
+            // Update progress and time
+            audio.addEventListener('timeupdate', () => updateProgress(episodeId));
+            audio.addEventListener('ended', () => resetPlayer(episodeId));
+            audio.addEventListener('loadstart', () => {
+                playBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-gray-800 text-lg loading-ring"></i>';
+            });
+            audio.addEventListener('canplay', () => {
+                playBtn.innerHTML = '<i class="fas fa-pause text-gray-800 text-xl"></i>';
+            });
+        }).catch(error => {
+            console.error('Error playing audio:', error);
+            alert('Error playing audio. Please try again.');
+        });
+    } else {
+        // Pause audio
+        pauseEpisode(episodeId);
+    }
+}
+
+function pauseEpisode(episodeId) {
+    const audio = document.getElementById(`audio-${episodeId}`);
+    const playIcon = document.getElementById(`playIcon-${episodeId}`);
+    const playBtn = document.getElementById(`playBtn-${episodeId}`);
+    
+    audio.pause();
+    playIcon.className = 'fas fa-play text-gray-800 text-xl ml-1';
+    
+    // Remove visual feedback from episode card
+    const episodeCard = playBtn.closest('.bg-white');
+    if (episodeCard) {
+        episodeCard.classList.remove('audio-playing', 'episode-card');
+    }
+    
+    if (currentlyPlaying === episodeId) {
+        currentlyPlaying = null;
+    }
+}
+
+function updateProgress(episodeId) {
+    const audio = document.getElementById(`audio-${episodeId}`);
+    const progress = document.getElementById(`progress-${episodeId}`);
+    const durationBadge = document.getElementById(`durationBadge-${episodeId}`);
+    
+    if (audio.duration) {
+        const progressPercent = (audio.currentTime / audio.duration) * 100;
+        progress.style.width = `${progressPercent}%`;
+        
+        // Update duration badge to show current time / total time
+        const currentTime = formatTime(audio.currentTime);
+        const totalTime = formatTime(audio.duration);
+        durationBadge.textContent = `${currentTime} / ${totalTime}`;
+    }
+}
+
+function resetPlayer(episodeId) {
+    const playIcon = document.getElementById(`playIcon-${episodeId}`);
+    const progressBar = document.getElementById(`progressBar-${episodeId}`);
+    const progress = document.getElementById(`progress-${episodeId}`);
+    const durationBadge = document.getElementById(`durationBadge-${episodeId}`);
+    const audio = document.getElementById(`audio-${episodeId}`);
+    const playBtn = document.getElementById(`playBtn-${episodeId}`);
+    
+    playIcon.className = 'fas fa-play text-gray-800 text-xl ml-1';
+    progressBar.classList.add('hidden');
+    progress.style.width = '0%';
+    
+    // Remove visual feedback from episode card
+    const episodeCard = playBtn.closest('.bg-white');
+    if (episodeCard) {
+        episodeCard.classList.remove('audio-playing', 'episode-card');
+    }
+    
+    // Reset duration badge to original duration
+    const originalDuration = audio.duration ? formatTime(audio.duration) : durationBadge.getAttribute('data-original') || '30:00';
+    durationBadge.textContent = originalDuration;
+    
+    currentlyPlaying = null;
+}
+
+function formatTime(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    
+    if (hours > 0) {
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    } else {
+        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    }
+}
+
+// Store original durations when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('[id^="durationBadge-"]').forEach(badge => {
+        badge.setAttribute('data-original', badge.textContent);
+    });
+});
 </script>
 
 <style>
@@ -270,6 +409,7 @@ function refreshFromRSS() {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    line-clamp: 2;
 }
 
 .line-clamp-3 {
@@ -277,6 +417,48 @@ function refreshFromRSS() {
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    line-clamp: 3;
+}
+
+/* Audio player enhancements */
+.audio-progress-bar {
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.8) 0%, rgba(99, 102, 241, 0.8) 100%);
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.audio-playing .episode-card {
+    border: 2px solid #3b82f6;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+/* Play button hover effects */
+.play-button:hover {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Loading spinner */
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.8);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+}
+
+.loading-ring::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: pulse-ring 1.5s infinite;
 }
 </style>
 @endsection
