@@ -86,9 +86,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/shows', [DashboardController::class, 'shows'])->name('dashboard.shows');
     Route::get('/dashboard/episodes', [DashboardController::class, 'episodes'])->name('dashboard.episodes');
+    // Posts management routes
     Route::get('/dashboard/posts', [PostController::class, 'index'])->name('dashboard.posts');
     Route::get('/dashboard/posts/create', [PostController::class, 'create'])->name('dashboard.posts.create');
     Route::post('/dashboard/posts', [PostController::class, 'store'])->name('dashboard.posts.store');
+    Route::get('/dashboard/posts/{post}', [PostController::class, 'show'])->name('dashboard.posts.show');
+    Route::get('/dashboard/posts/{post}/edit', [PostController::class, 'edit'])->name('dashboard.posts.edit');
+    Route::put('/dashboard/posts/{post}', [PostController::class, 'update'])->name('dashboard.posts.update');
+    Route::delete('/dashboard/posts/{post}', [PostController::class, 'destroy'])->name('dashboard.posts.destroy');
     Route::get('/dashboard/users', [DashboardController::class, 'users'])->name('dashboard.users');
 });
 

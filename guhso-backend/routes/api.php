@@ -27,13 +27,11 @@ Route::prefix('v1')->group(function () {
     Route::get('/search', [SearchController::class, 'api']);
     Route::get('/popular-tags', [SearchController::class, 'popularTags']);
 
-    // Blog posts
+    // Blog posts (public)
     Route::get('/posts', [PostController::class, 'index']);
     Route::get('/posts/featured', [PostController::class, 'featured']);
-    Route::post('/posts', [PostController::class, 'store']);
-    Route::get('/posts/{post}', [PostController::class, 'show']);
-    Route::put('/posts/{post}', [PostController::class, 'update']);
-    Route::delete('/posts/{post}', [PostController::class, 'destroy']);
+    Route::get('/posts/sticky', [PostController::class, 'sticky']);
+    Route::get('/posts/{post:slug}', [PostController::class, 'show']);
     
     // Categories for navigation
     Route::get('/categories', function() {
@@ -61,16 +59,27 @@ Route::prefix('v1')->group(function () {
         Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
     });
     
+    // Protected post management routes (require authentication)
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/posts', [PostController::class, 'store']);
+        Route::put('/posts/{post}', [PostController::class, 'update']);
+        Route::delete('/posts/{post}', [PostController::class, 'destroy']);
+        Route::post('/posts/{post}/cover-image', [PostController::class, 'uploadCoverImage']);
+        Route::delete('/posts/{post}/cover-image', [PostController::class, 'deleteCoverImage']);
+    });
+
     // Admin routes
     Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
         Route::apiResource('shows', \App\Http\Controllers\Admin\ShowController::class);
-        Route::apiResource('episodes', \App\Http\Controllers\Admin\EpisodeController::class);
+        Route::apiResource('posts', PostController::class);
         Route::get('/dashboard/stats', function() {
             return response()->json([
                 'total_shows' => \App\Models\Show::count(),
                 'total_episodes' => \App\Models\Episode::count(),
+                'total_posts' => \App\Models\Post::count(),
                 'total_users' => \App\Models\User::count(),
-                'recent_episodes' => \App\Models\Episode::latest()->take(5)->get()
+                'recent_episodes' => \App\Models\Episode::latest()->take(5)->get(),
+                'recent_posts' => \App\Models\Post::with('user')->latest()->take(5)->get()
             ]);
         });
     });
