@@ -197,22 +197,6 @@
                     
                     <!-- Actions -->
                     <div class="flex space-x-2">
-                        <!-- Hero Toggle Button -->
-                        <button onclick="toggleHero('{{ $episode->id }}')" 
-                                id="heroBtn-{{ $episode->id }}"
-                                class="hero-toggle-btn {{ $episode->is_featured ? 'hero-active' : 'hero-inactive' }} px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 hover:scale-105">
-                            <i id="heroIcon-{{ $episode->id }}" class="fas {{ $episode->is_featured ? 'fa-star' : 'fa-star-o' }} mr-1"></i>
-                            <span id="heroText-{{ $episode->id }}">{{ $episode->is_featured ? 'Hero' : 'Set Hero' }}</span>
-                        </button>
-                        
-                        <!-- Featured Sidebar Toggle Button -->
-                        <button onclick="toggleFeaturedSidebar('{{ $episode->id }}')" 
-                                id="sidebarBtn-{{ $episode->id }}"
-                                class="sidebar-toggle-btn {{ $episode->is_featured_sidebar ? 'sidebar-active' : 'sidebar-inactive' }} px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 hover:scale-105">
-                            <i id="sidebarIcon-{{ $episode->id }}" class="fas {{ $episode->is_featured_sidebar ? 'fa-bookmark' : 'fa-bookmark-o' }} mr-1"></i>
-                            <span id="sidebarText-{{ $episode->id }}">{{ $episode->is_featured_sidebar ? 'Featured' : 'Feature' }}</span>
-                        </button>
-                        
                         <a href="{{ route('dashboard.episodes.edit', $episode) }}" class="p-2 text-gray-500 hover:text-blue-600 transition-colors" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
@@ -222,6 +206,24 @@
                         <button class="p-2 text-gray-500 hover:text-red-600 transition-colors" title="Delete">
                             <i class="fas fa-trash"></i>
                         </button>
+                    </div>
+                    <div class="mt-2 space-y-2">
+                        <!-- Hero Toggle Switch -->
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" id="heroToggle-{{ $episode->id }}" class="sr-only peer" onchange="toggleHero('{{ $episode->id }}')" {{ $episode->is_featured ? 'checked' : '' }}>
+                            <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600 transition-colors relative">
+                                <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+                            </div>
+                            <span id="heroText-{{ $episode->id }}" class="ml-2 text-sm text-gray-700">{{ $episode->is_featured ? 'Hero' : 'Set Hero' }}</span>
+                        </label>
+                        <!-- Featured Sidebar Toggle Switch -->
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" id="sidebarToggle-{{ $episode->id }}" class="sr-only peer" onchange="toggleFeaturedSidebar('{{ $episode->id }}')" {{ $episode->is_featured_sidebar ? 'checked' : '' }}>
+                            <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-purple-600 transition-colors relative">
+                                <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+                            </div>
+                            <span id="sidebarText-{{ $episode->id }}" class="ml-2 text-sm text-gray-700">{{ $episode->is_featured_sidebar ? 'Featured' : 'Feature' }}</span>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -413,15 +415,12 @@ function formatTime(seconds) {
 
 // Featured Sidebar toggle functionality
 function toggleFeaturedSidebar(episodeId) {
-    const button = document.getElementById(`sidebarBtn-${episodeId}`);
-    const icon = document.getElementById(`sidebarIcon-${episodeId}`);
+    const toggle = document.getElementById(`sidebarToggle-${episodeId}`);
     const text = document.getElementById(`sidebarText-${episodeId}`);
-    
-    // Show loading state
-    const originalButton = button.innerHTML;
-    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Loading...';
-    button.disabled = true;
-    
+    const previous = toggle.checked;
+
+    toggle.disabled = true;
+
     fetch(`/dashboard/episodes/${episodeId}/toggle-featured-sidebar`, {
         method: 'POST',
         headers: {
@@ -432,39 +431,33 @@ function toggleFeaturedSidebar(episodeId) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Update this episode's button
             const isFeatured = data.episode.is_featured_sidebar;
-            button.className = `sidebar-toggle-btn ${isFeatured ? 'sidebar-active' : 'sidebar-inactive'} px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 hover:scale-105`;
-            icon.className = `fas ${isFeatured ? 'fa-bookmark' : 'fa-bookmark-o'} mr-1`;
+            toggle.checked = isFeatured;
             text.textContent = isFeatured ? 'Featured' : 'Feature';
-            
-            // Show success message
             showNotification(data.message, 'success');
         } else {
+            toggle.checked = previous;
             showNotification(data.message || 'Failed to update featured status', 'error');
         }
     })
     .catch(error => {
         console.error('Error toggling featured sidebar status:', error);
+        toggle.checked = previous;
         showNotification('Failed to update featured status', 'error');
     })
     .finally(() => {
-        button.innerHTML = originalButton;
-        button.disabled = false;
+        toggle.disabled = false;
     });
 }
 
 // Hero toggle functionality
 function toggleHero(episodeId) {
-    const button = document.getElementById(`heroBtn-${episodeId}`);
-    const icon = document.getElementById(`heroIcon-${episodeId}`);
+    const toggle = document.getElementById(`heroToggle-${episodeId}`);
     const text = document.getElementById(`heroText-${episodeId}`);
-    
-    // Show loading state
-    const originalButton = button.innerHTML;
-    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Loading...';
-    button.disabled = true;
-    
+    const previous = toggle.checked;
+
+    toggle.disabled = true;
+
     fetch(`/api/v1/episodes/${episodeId}/toggle-hero`, {
         method: 'PUT',
         headers: {
@@ -475,36 +468,36 @@ function toggleHero(episodeId) {
     .then(response => response.json())
     .then(data => {
         if (data.message) {
-            // Update this episode's button
             const isHero = data.episode.is_featured;
-            button.className = `hero-toggle-btn ${isHero ? 'hero-active' : 'hero-inactive'} px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 hover:scale-105`;
-            icon.className = `fas ${isHero ? 'fa-star' : 'fa-star-o'} mr-1`;
+            toggle.checked = isHero;
             text.textContent = isHero ? 'Hero' : 'Set Hero';
-            
-            // If this episode became hero, update all other episodes to not be hero
+
             if (isHero) {
-                document.querySelectorAll('[id^="heroBtn-"]').forEach(btn => {
-                    if (btn.id !== `heroBtn-${episodeId}`) {
-                        const btnIcon = btn.querySelector('i');
-                        const btnText = btn.querySelector('span');
-                        btn.className = 'hero-toggle-btn hero-inactive px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 hover:scale-105';
-                        if (btnIcon) btnIcon.className = 'fas fa-star-o mr-1';
-                        if (btnText) btnText.textContent = 'Set Hero';
+                document.querySelectorAll('[id^="heroToggle-"]').forEach(t => {
+                    if (t.id !== `heroToggle-${episodeId}`) {
+                        t.checked = false;
+                    }
+                });
+                document.querySelectorAll('[id^="heroText-"]').forEach(el => {
+                    if (el.id !== `heroText-${episodeId}`) {
+                        el.textContent = 'Set Hero';
                     }
                 });
             }
-            
-            // Show success message
+
             showNotification(data.message, 'success');
+        } else {
+            toggle.checked = previous;
+            showNotification('Failed to update hero status', 'error');
         }
     })
     .catch(error => {
         console.error('Error toggling hero status:', error);
+        toggle.checked = previous;
         showNotification('Failed to update hero status', 'error');
     })
     .finally(() => {
-        button.innerHTML = originalButton;
-        button.disabled = false;
+        toggle.disabled = false;
     });
 }
 
@@ -596,76 +589,5 @@ document.addEventListener('DOMContentLoaded', function() {
     animation: pulse-ring 1.5s infinite;
 }
 
-/* Hero toggle button styles */
-.hero-toggle-btn {
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-    border: none;
-    font-weight: 500;
-}
-
-.hero-toggle-btn:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-.hero-toggle-btn.hero-inactive {
-    background-color: #6b7280;
-    color: white;
-    border: 1px solid #9ca3af;
-}
-
-.hero-toggle-btn.hero-inactive:hover {
-    background-color: #4b5563;
-    color: #ffd700;
-}
-
-.hero-toggle-btn.hero-active {
-    background: linear-gradient(45deg, #ffd700, #ffed4e);
-    color: #1f2937;
-    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
-}
-
-.hero-toggle-btn.hero-active:hover {
-    background: linear-gradient(45deg, #ffed4e, #ffd700);
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
-}
-
-/* Featured Sidebar toggle button styles */
-.sidebar-toggle-btn {
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-    border: none;
-    font-weight: 500;
-}
-
-.sidebar-toggle-btn:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-.sidebar-toggle-btn.sidebar-inactive {
-    background-color: #6366f1;
-    color: white;
-    border: 1px solid #818cf8;
-}
-
-.sidebar-toggle-btn.sidebar-inactive:hover {
-    background-color: #4f46e5;
-    color: #e0e7ff;
-}
-
-.sidebar-toggle-btn.sidebar-active {
-    background: linear-gradient(45deg, #8b5cf6, #a78bfa);
-    color: white;
-    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
-}
-
-.sidebar-toggle-btn.sidebar-active:hover {
-    background: linear-gradient(45deg, #7c3aed, #8b5cf6);
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
-}
 </style>
 @endsection
