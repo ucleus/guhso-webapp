@@ -175,6 +175,66 @@ class DashboardController extends Controller
         }
     }
     
+    public function editEpisode(Episode $episode)
+    {
+        return view('dashboard.episodes.edit', compact('episode'));
+    }
+
+    public function updateEpisode(Request $request, Episode $episode)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'is_published' => 'boolean',
+        ]);
+
+        $episode->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'is_published' => $request->has('is_published'),
+        ]);
+
+        return redirect()->route('dashboard.episodes')->with('success', 'Episode updated successfully!');
+    }
+
+    public function uploadThumbnail(Request $request, Episode $episode)
+    {
+        $request->validate([
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        try {
+            if ($request->hasFile('thumbnail')) {
+                $image = $request->file('thumbnail');
+                $filename = time() . '_episode_' . $episode->id . '.' . $image->getClientOriginalExtension();
+                
+                // Create directory if it doesn't exist
+                $uploadPath = public_path('storage/episodes/thumbnails');
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+                
+                // Move uploaded file
+                $image->move($uploadPath, $filename);
+                
+                // Update episode with new thumbnail URL
+                $thumbnailUrl = asset('storage/episodes/thumbnails/' . $filename);
+                $episode->update(['thumbnail_url' => $thumbnailUrl]);
+                
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Thumbnail uploaded successfully!',
+                    'thumbnail_url' => $thumbnailUrl
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to upload thumbnail: ' . $e->getMessage()
+            ]);
+        }
+    }
+
     public function toggleHero(Episode $episode)
     {
         try {

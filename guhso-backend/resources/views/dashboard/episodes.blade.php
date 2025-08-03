@@ -205,9 +205,9 @@
                             <span id="heroText-{{ $episode->id }}">{{ $episode->is_featured ? 'Hero' : 'Set Hero' }}</span>
                         </button>
                         
-                        <button class="p-2 text-gray-500 hover:text-blue-600 transition-colors" title="Edit">
+                        <a href="{{ route('dashboard.episodes.edit', $episode) }}" class="p-2 text-gray-500 hover:text-blue-600 transition-colors" title="Edit">
                             <i class="fas fa-edit"></i>
-                        </button>
+                        </a>
                         <button class="p-2 text-gray-500 hover:text-green-600 transition-colors" title="View">
                             <i class="fas fa-eye"></i>
                         </button>
