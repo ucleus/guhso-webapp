@@ -174,4 +174,30 @@ class DashboardController extends Controller
             ]);
         }
     }
+    
+    public function toggleHero(Episode $episode)
+    {
+        try {
+            // First, remove hero status from all other episodes
+            Episode::where('is_featured', true)->update(['is_featured' => false]);
+            
+            // Toggle the current episode's hero status
+            $episode->is_featured = !$episode->is_featured;
+            $episode->save();
+            
+            return response()->json([
+                'success' => true,
+                'is_hero' => $episode->is_featured,
+                'message' => $episode->is_featured 
+                    ? 'Episode set as hero successfully!' 
+                    : 'Episode removed from hero successfully!'
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to toggle hero status: ' . $e->getMessage()
+            ]);
+        }
+    }
 }

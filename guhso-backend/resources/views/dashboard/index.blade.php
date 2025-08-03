@@ -116,11 +116,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="text-sm text-gray-500 flex flex-col items-end">
+                <div class="text-sm text-gray-500 flex flex-col items-end space-y-2">
                     <span>{{ $episode->created_at->diffForHumans() }}</span>
-                    <span id="recentEpisodeDuration-{{ $episode->id }}" class="text-xs text-gray-400 mt-1">
+                    <span id="recentEpisodeDuration-{{ $episode->id }}" class="text-xs text-gray-400">
                         {{ $episode->itunes_duration ?? '00:00' }}
                     </span>
+                    
+                    <!-- Hero Toggle Button -->
+                    <button onclick="toggleHero('{{ $episode->id }}')" 
+                            id="heroBtn-{{ $episode->id }}"
+                            class="hero-toggle-btn {{ $episode->is_featured ? 'hero-active' : 'hero-inactive' }} px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 hover:scale-105">
+                        <i id="heroIcon-{{ $episode->id }}" class="fas {{ $episode->is_featured ? 'fa-star' : 'fa-star-o' }} mr-1"></i>
+                        <span id="heroText-{{ $episode->id }}">{{ $episode->is_featured ? 'Hero' : 'Set Hero' }}</span>
+                    </button>
                 </div>
             </div>
         </li>
@@ -291,6 +299,95 @@ function formatRecentTime(seconds) {
     }
 }
 
+// Hero toggle functionality
+function toggleHero(episodeId) {
+    const heroBtn = document.getElementById(`heroBtn-${episodeId}`);
+    const heroIcon = document.getElementById(`heroIcon-${episodeId}`);
+    const heroText = document.getElementById(`heroText-${episodeId}`);
+    
+    // Show loading state
+    const originalContent = heroBtn.innerHTML;
+    heroBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Setting...';
+    heroBtn.disabled = true;
+    
+    fetch(`/dashboard/episodes/${episodeId}/toggle-hero`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update all hero buttons first (reset all to inactive)
+            document.querySelectorAll('.hero-toggle-btn').forEach(btn => {
+                btn.classList.remove('hero-active');
+                btn.classList.add('hero-inactive');
+                
+                const btnIcon = btn.querySelector('[id^="heroIcon-"]');
+                const btnText = btn.querySelector('[id^="heroText-"]');
+                if (btnIcon) btnIcon.className = 'fas fa-star-o mr-1';
+                if (btnText) btnText.textContent = 'Set Hero';
+            });
+            
+            // Update the clicked button based on response
+            if (data.is_hero) {
+                heroBtn.classList.remove('hero-inactive');
+                heroBtn.classList.add('hero-active');
+                heroIcon.className = 'fas fa-star mr-1';
+                heroText.textContent = 'Hero';
+            } else {
+                heroBtn.classList.remove('hero-active');
+                heroBtn.classList.add('hero-inactive');
+                heroIcon.className = 'fas fa-star-o mr-1';
+                heroText.textContent = 'Set Hero';
+            }
+            
+            // Show success message
+            showHeroMessage(data.message, 'success');
+        } else {
+            showHeroMessage(data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Hero toggle error:', error);
+        showHeroMessage('Failed to toggle hero status. Please try again.', 'error');
+    })
+    .finally(() => {
+        heroBtn.innerHTML = originalContent;
+        heroBtn.disabled = false;
+    });
+}
+
+function showHeroMessage(message, type) {
+    // Create and show a temporary notification
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg z-50 transition-all duration-300 ${
+        type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+    }`;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.style.opacity = '1';
+        notification.style.transform = 'translateY(0)';
+    }, 100);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateY(-100%)';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
 // Store original durations when page loads
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('[id^="recentDuration-"]').forEach(span => {
@@ -335,6 +432,53 @@ document.addEventListener('DOMContentLoaded', function() {
 .recent-episode-playing {
     background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
     border-left: 4px solid #3b82f6;
+}
+
+/* Hero toggle button styles */
+.hero-toggle-btn {
+    border: 1px solid transparent;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.hero-inactive {
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    color: #6b7280;
+    border-color: #d1d5db;
+}
+
+.hero-inactive:hover {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: white;
+    border-color: #d97706;
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+}
+
+.hero-active {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: white;
+    border-color: #d97706;
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+}
+
+.hero-active:hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    box-shadow: 0 6px 16px rgba(251, 191, 36, 0.5);
+}
+
+/* Hero notification styles */
+.hero-notification {
+    opacity: 0;
+    transform: translateY(-100%);
+    font-weight: 500;
+    min-width: 200px;
+    max-width: 400px;
+}
+
+.hero-notification.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 </style>
 @endsection
