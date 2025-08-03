@@ -52,4 +52,126 @@ class DashboardController extends Controller
         $users = User::latest()->paginate(20);
         return view('dashboard.users', compact('users'));
     }
+
+    public function syncEpisodesFromRSS()
+    {
+        try {
+            $rssUrl = 'https://anchor.fm/s/341db29c/podcast/rss';
+            
+            // Fetch RSS feed
+            $xmlString = file_get_contents($rssUrl);
+            if (!$xmlString) {
+                return response()->json(['success' => false, 'message' => 'Failed to fetch RSS feed']);
+            }
+            
+            $xml = simplexml_load_string($xmlString);
+            if (!$xml) {
+                return response()->json(['success' => false, 'message' => 'Failed to parse RSS feed']);
+            }
+            
+            $syncedCount = 0;
+            $errors = [];
+            
+            // Parse episodes from RSS
+            foreach ($xml->channel->item as $item) {
+                try {
+                    // Extract episode data
+                    $title = (string) $item->title;
+                    $description = strip_tags((string) $item->description);
+                    $pubDate = (string) $item->pubDate;
+                    $link = (string) $item->link;
+                    $guid = (string) $item->guid;
+                    
+                    // Extract audio info
+                    $audioUrl = (string) ($item->enclosure['url'] ?? '');
+                    $audioLength = (string) ($item->enclosure['length'] ?? '');
+                    $audioType = (string) ($item->enclosure['type'] ?? '');
+                    
+                    // Default values
+                    $duration = '';
+                    $episodeNumber = null;
+                    $seasonNumber = null;
+                    $image = '';
+                    $explicit = 'false';
+                    
+                    // Extract iTunes data if available
+                    $namespaces = $item->getNameSpaces(true);
+                    if (isset($namespaces['itunes'])) {
+                        $itunes = $item->children($namespaces['itunes']);
+                        $duration = (string) $itunes->duration;
+                        $episodeNumber = (int) $itunes->episode ?: null;
+                        $seasonNumber = (int) $itunes->season ?: null;
+                        $image = (string) $itunes->image['href'] ?? '';
+                        $explicit = (string) $itunes->explicit;
+                    }
+                    
+                    // Ensure required fields have values
+                    if (empty($audioUrl)) {
+                        $audioUrl = 'https://anchor.fm/s/341db29c/podcast/play/default';
+                    }
+
+                    // Convert duration to seconds for the duration column (int)
+                    $durationInSeconds = 0;
+                    if ($duration) {
+                        $parts = explode(':', $duration);
+                        if (count($parts) === 3) {
+                            $durationInSeconds = ($parts[0] * 3600) + ($parts[1] * 60) + $parts[2];
+                        } elseif (count($parts) === 2) {
+                            $durationInSeconds = ($parts[0] * 60) + $parts[1];
+                        }
+                    }
+
+                    // Create episode data array
+                    $episodeData = [
+                        'show_id' => 1,
+                        'title' => $title,
+                        'description' => $description,
+                        'link' => $link,
+                        'guid' => $guid,
+                        'pub_date' => $pubDate ? date('Y-m-d H:i:s', strtotime($pubDate)) : null,
+                        'published_at' => $pubDate ? date('Y-m-d H:i:s', strtotime($pubDate)) : null,
+                        'audio_url' => $audioUrl,
+                        'audio_length' => $audioLength,
+                        'audio_type' => $audioType,
+                        'duration' => $durationInSeconds, // Store as seconds (int)
+                        'itunes_duration' => $duration, // Store as time string (varchar)
+                        'episode_number' => $episodeNumber,
+                        'season_number' => $seasonNumber,
+                        'itunes_season' => $seasonNumber,
+                        'itunes_episode' => $episodeNumber,
+                        'thumbnail_url' => $image,
+                        'itunes_image' => $image,
+                        'itunes_explicit' => $explicit === 'true' ? 1 : 0,
+                        'is_published' => true,
+                        'is_manual' => false,
+                        'play_count' => 0,
+                    ];
+
+                    // Create or update episode
+                    $episode = Episode::updateOrCreate(
+                        ['guid' => $guid], // Use GUID as unique identifier
+                        $episodeData
+                    );
+                    
+                    if ($episode) {
+                        $syncedCount++;
+                    }
+                } catch (\Exception $e) {
+                    $errors[] = "Failed to sync episode: {$title} - {$e->getMessage()}";
+                }
+            }
+            
+            return response()->json([
+                'success' => true,
+                'message' => "Successfully synced {$syncedCount} episodes",
+                'errors' => $errors
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'RSS sync failed: ' . $e->getMessage()
+            ]);
+        }
+    }
 }

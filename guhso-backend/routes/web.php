@@ -86,6 +86,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/shows', [DashboardController::class, 'shows'])->name('dashboard.shows');
     Route::get('/dashboard/episodes', [DashboardController::class, 'episodes'])->name('dashboard.episodes');
+    Route::post('/dashboard/episodes/sync-rss', [DashboardController::class, 'syncEpisodesFromRSS'])->name('dashboard.episodes.sync');
     // Posts management routes
     Route::get('/dashboard/posts', [PostController::class, 'index'])->name('dashboard.posts');
     Route::get('/dashboard/posts/create', [PostController::class, 'create'])->name('dashboard.posts.create');
