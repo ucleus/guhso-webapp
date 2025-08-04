@@ -113,6 +113,9 @@ guhso-webapp/
 # Navigate to backend directory
 cd guhso-backend
 
+# Install Node modules
+npm install
+
 # Install PHP dependencies
 composer install
 
