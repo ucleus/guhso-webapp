@@ -229,9 +229,11 @@ const EpisodeDetail = () => {
             <div className="episode-description">
               <h2>About This Episode</h2>
               <div className="description-content">
-                {episode.description.split('\n').map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
-                ))}
+                {(episode.description ? episode.description.split('\n') : []).map(
+                  (paragraph, index) => (
+                    <p key={index}>{paragraph}</p>
+                  )
+                )}
               </div>
             </div>
           </section>

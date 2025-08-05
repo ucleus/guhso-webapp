@@ -49,7 +49,6 @@
   overflow-wrap: break-word;
   min-width: 0; /* Allows flex items to shrink below their content size */
   height: auto;
-  min-height: 100%;
   justify-self: start;
   align-self: start;
 }
@@ -364,12 +363,7 @@
 .episode-social {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 2rem;
-  margin-top: 4rem;
-  margin-bottom: 2rem;
-  position: static;
-  display: block;
-  width: 100%;
-  clear: both;
+  margin: 0;
 }
 
 .episode-social h3 {
@@ -408,7 +402,7 @@
   scroll-behavior: smooth;
   align-self: start;
   justify-self: start;
-  z-index: 10; /* Higher z-index to ensure it stays above content */
+  z-index: auto;
 }
 
 /* Custom scrollbar for sidebar */
