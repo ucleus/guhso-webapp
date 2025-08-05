@@ -1,0 +1,36 @@
+.post-card {
+  display: block;
+  background: var(--bg-secondary, #1a1a1a);
+  color: var(--text-primary, #ffffff);
+  text-decoration: none;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.post-card-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.post-card-content {
+  padding: 1rem;
+}
+
+.post-card-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.125rem;
+}
+
+.post-card-description {
+  margin: 0;
+  color: var(--text-light, #cccccc);
+  font-size: 0.875rem;
+}
