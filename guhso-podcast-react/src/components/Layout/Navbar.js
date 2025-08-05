@@ -21,7 +21,7 @@ const Navbar = () => {
 
   const navLinks = [
     { href: '/episodes', label: 'Episodes' },
-    { href: '#it-guhso', label: 'It Guhso' },
+    { href: '/blog', label: 'It Guhso' },
     { href: '#tech', label: 'Tech' },
     { href: '#merch', label: 'Merch'},
     { href: '#advertise', label: 'Advertise' },

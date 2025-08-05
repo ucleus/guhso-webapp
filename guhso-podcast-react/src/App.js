@@ -9,6 +9,8 @@ import FloatingPlayer from './components/Player/FloatingPlayer';
 import PostList from './components/Posts/PostList';
 import Episodes from './pages/Episodes';
 import EpisodeDetail from './pages/EpisodeDetail';
+import Blog from './pages/Blog';
+import BlogDetail from './pages/BlogDetail';
 import { fetchPosts } from './api';
 import { PlayerProvider } from './contexts/PlayerContext';
 import './App.css';
@@ -64,9 +66,21 @@ function App() {
             />
             
             {/* Episode Detail Page */}
-            <Route 
-              path="/episode/:slug" 
-              element={<EpisodeDetail />} 
+            <Route
+              path="/episode/:slug"
+              element={<EpisodeDetail />}
+            />
+
+            {/* Blog Page */}
+            <Route
+              path="/blog"
+              element={<Blog />}
+            />
+
+            {/* Blog Detail Page */}
+            <Route
+              path="/blog/:slug"
+              element={<BlogDetail />}
             />
             
             {/* Fallback for unknown routes */}
