@@ -1,1 +1,84 @@
+/* Right Section (Sidebar) */
+.right-section {
+    width: 350px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+    padding-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
 
+.right-section::-webkit-scrollbar {
+    width: 8px;
+}
+
+.right-section::-webkit-scrollbar-track {
+    background: var(--light-bg);
+    border-radius: 4px;
+}
+
+.right-section::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+.right-section::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* Responsive Design for Sidebar */
+@media (max-width: 992px) {
+    .right-section {
+        width: 100%;
+        height: auto;
+        overflow-y: visible;
+        padding-left: 0;
+        flex-direction: row;
+        gap: 1rem;
+    }
+    
+    .right-section > * {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .right-section::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .right-section {
+        flex-direction: column;
+        gap: 0.75rem;
+        height: auto;
+        padding: 0;
+    }
+    
+    .right-section > * {
+        flex: none;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .right-section {
+        gap: 0.5rem;
+    }
+}
+
+/* Landscape phones - keep sidebar layout for better UX */
+@media (max-width: 768px) and (orientation: landscape) {
+    .right-section {
+        flex: 1;
+        flex-direction: column;
+        height: 100%;
+        overflow-y: auto;
+        min-width: 280px;
+    }
+    
+    .right-section::-webkit-scrollbar {
+        width: 6px;
+    }
+}

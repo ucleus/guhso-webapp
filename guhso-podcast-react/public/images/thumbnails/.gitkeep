@@ -1,0 +1,7 @@
+# This file ensures the thumbnails directory is tracked in git
+# Default thumbnails should be placed in this directory:
+# - default.jpg (400x300)
+# - hero-featured.jpg (1200x600)
+# 
+# For production, upload optimized JPEG images to:
+# https://guhso.com/images/thumbnails/

@@ -1,0 +1,400 @@
+/* AdCard component styles */
+
+.ad-card {
+  position: relative;
+  background: var(--light-bg);
+  border-radius: 16px;
+  padding: 1.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.ad-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.ad-card.hovered .ad-background {
+  opacity: 0.15;
+  transform: scale(1.1);
+}
+
+/* Close Button */
+.ad-close-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  transition: all 0.3s ease;
+  z-index: 3;
+  backdrop-filter: blur(10px);
+}
+
+.ad-close-btn:hover {
+  background: rgba(255, 0, 0, 0.2);
+  color: #ff4444;
+  transform: scale(1.1);
+}
+
+/* Ad Content */
+.ad-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Ad Header */
+.ad-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ad-icon {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  font-size: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.ad-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* Ad Body */
+.ad-body {
+  flex: 1;
+}
+
+.ad-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--text-light);
+  margin: 0 0 0.25rem 0;
+  line-height: 1.2;
+}
+
+.ad-subtitle {
+  font-size: 0.95rem;
+  color: var(--primary-color);
+  margin: 0 0 0.75rem 0;
+  font-weight: 500;
+}
+
+.ad-description {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Ad Footer */
+.ad-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ad-cta-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ad-cta-btn:hover {
+  background: var(--secondary-color);
+  transform: translateX(2px);
+}
+
+.ad-cta-btn i {
+  font-size: 0.75rem;
+  transition: transform 0.3s ease;
+}
+
+.ad-cta-btn:hover i {
+  transform: translateX(3px);
+}
+
+/* Background */
+.ad-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.08;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+/* Animated Decorations */
+.ad-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.decoration-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  animation: float 6s ease-in-out infinite;
+}
+
+.circle-1 {
+  width: 60px;
+  height: 60px;
+  top: -30px;
+  right: -30px;
+  animation-delay: 0s;
+}
+
+.circle-2 {
+  width: 40px;
+  height: 40px;
+  bottom: -20px;
+  left: -20px;
+  animation-delay: 2s;
+}
+
+.circle-3 {
+  width: 80px;
+  height: 80px;
+  top: 50%;
+  left: -40px;
+  transform: translateY(-50%);
+  animation-delay: 4s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.05;
+  }
+  50% {
+    transform: translateY(-10px) rotate(180deg);
+    opacity: 0.1;
+  }
+}
+
+/* Ad Type Variations */
+.ad-card.sponsored {
+  border-left: 4px solid #667eea;
+}
+
+.ad-card.sponsored .ad-icon {
+  color: #667eea;
+}
+
+.ad-card.sponsored .ad-cta-btn {
+  background: #667eea;
+}
+
+.ad-card.sponsored .ad-cta-btn:hover {
+  background: #764ba2;
+}
+
+.ad-card.newsletter {
+  border-left: 4px solid #f093fb;
+}
+
+.ad-card.newsletter .ad-icon {
+  color: #f093fb;
+}
+
+.ad-card.newsletter .ad-cta-btn {
+  background: #f093fb;
+}
+
+.ad-card.newsletter .ad-cta-btn:hover {
+  background: #f5576c;
+}
+
+/* Loading State */
+.ad-card.loading {
+  animation: pulse 1.5s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.ad-card.loading .ad-content {
+  opacity: 0.7;
+}
+
+.ad-card.loading .ad-title,
+.ad-card.loading .ad-subtitle,
+.ad-card.loading .ad-description {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: transparent;
+}
+
+.ad-card.loading .ad-title {
+  height: 1.2rem;
+  width: 80%;
+}
+
+.ad-card.loading .ad-subtitle {
+  height: 1rem;
+  width: 60%;
+}
+
+.ad-card.loading .ad-description {
+  height: 3rem;
+  width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .ad-card {
+    padding: 1.25rem;
+  }
+  
+  .ad-content {
+    gap: 0.75rem;
+  }
+  
+  .ad-title {
+    font-size: 1.1rem;
+  }
+  
+  .ad-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .ad-description {
+    font-size: 0.8rem;
+  }
+  
+  .ad-cta-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+  
+  .decoration-circle {
+    display: none; /* Hide decorations on mobile for performance */
+  }
+}
+
+@media (max-width: 480px) {
+  .ad-card {
+    padding: 1rem;
+  }
+  
+  .ad-header {
+    gap: 0.5rem;
+  }
+  
+  .ad-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+  }
+  
+  .ad-title {
+    font-size: 1rem;
+  }
+  
+  .ad-cta-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .ad-card {
+    border: 2px solid var(--text-light);
+    background: var(--dark-bg);
+  }
+  
+  .ad-icon {
+    border: 2px solid var(--primary-color);
+  }
+  
+  .ad-cta-btn {
+    border: 2px solid white;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .ad-card,
+  .ad-close-btn,
+  .ad-cta-btn,
+  .ad-background {
+    transition: none;
+  }
+  
+  .ad-card:hover,
+  .ad-close-btn:hover,
+  .ad-cta-btn:hover {
+    transform: none;
+  }
+  
+  .decoration-circle {
+    animation: none;
+  }
+  
+  .ad-card.loading {
+    animation: none;
+    opacity: 0.7;
+  }
+}
+
+/* Focus states for accessibility */
+.ad-card:focus,
+.ad-close-btn:focus,
+.ad-cta-btn:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.ad-card:focus:not(:focus-visible),
+.ad-close-btn:focus:not(:focus-visible),
+.ad-cta-btn:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Print styles */
+@media print {
+  .ad-card {
+    display: none;
+  }
+}

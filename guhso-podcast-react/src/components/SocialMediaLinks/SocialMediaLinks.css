@@ -1,0 +1,333 @@
+/* Social Media Links component styles */
+
+.social-media-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Social Platforms */
+.social-platforms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.social-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--light-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.social-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(var(--social-color-rgb), 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.social-btn:hover::before {
+  left: 100%;
+}
+
+.social-btn:hover {
+  border-color: var(--social-color);
+  color: var(--social-color);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.social-btn i {
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.social-btn:hover i {
+  transform: scale(1.2);
+}
+
+.social-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Copy Link Section */
+.copy-link-section {
+  padding: 1.5rem;
+  background: var(--light-bg);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.copy-link-input {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.url-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: var(--dark-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--text-light);
+  font-size: 0.9rem;
+  font-family: 'Courier New', monospace;
+}
+
+.url-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.copy-link-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.copy-link-btn:hover {
+  background: var(--secondary-color);
+  transform: translateY(-1px);
+}
+
+.copy-link-btn.copied {
+  background: #28a745;
+}
+
+.copy-link-btn i {
+  font-size: 0.9rem;
+}
+
+/* GUHSO Social Links */
+.guhso-social {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.05), rgba(247, 147, 30, 0.05));
+  border: 1px solid rgba(255, 107, 53, 0.1);
+  border-radius: 12px;
+}
+
+.guhso-social h4 {
+  margin: 0 0 1rem 0;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.guhso-links {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.guhso-social-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--dark-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--text-light);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.guhso-social-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.guhso-social-btn:hover::before {
+  left: 100%;
+}
+
+.guhso-social-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.guhso-social-btn.twitter:hover {
+  border-color: #1DA1F2;
+  color: #1DA1F2;
+}
+
+.guhso-social-btn.instagram:hover {
+  border-color: #E4405F;
+  color: #E4405F;
+}
+
+.guhso-social-btn.linkedin:hover {
+  border-color: #0077B5;
+  color: #0077B5;
+}
+
+.guhso-social-btn.youtube:hover {
+  border-color: #FF0000;
+  color: #FF0000;
+}
+
+.guhso-social-btn i {
+  font-size: 1.2rem;
+}
+
+.guhso-social-btn span {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .social-platforms {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+  
+  .social-btn {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .social-btn i {
+    font-size: 1.25rem;
+  }
+  
+  .social-name {
+    font-size: 0.8rem;
+  }
+  
+  .copy-link-input {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .copy-link-btn {
+    justify-content: center;
+  }
+  
+  .guhso-links {
+    grid-template-columns: 1fr;
+  }
+  
+  .guhso-social {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .social-platforms {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .social-btn {
+    padding: 0.5rem;
+  }
+  
+  .social-name {
+    font-size: 0.75rem;
+  }
+  
+  .url-input {
+    font-size: 0.8rem;
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .copy-link-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .social-btn,
+  .copy-link-section,
+  .guhso-social,
+  .guhso-social-btn {
+    border: 2px solid var(--text-light);
+  }
+  
+  .social-btn:hover {
+    background: var(--primary-color);
+    color: var(--dark-bg);
+  }
+  
+  .guhso-social-btn:hover {
+    background: var(--primary-color);
+    color: var(--dark-bg);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .social-btn,
+  .social-btn i,
+  .copy-link-btn,
+  .guhso-social-btn {
+    transition: none;
+  }
+  
+  .social-btn:hover,
+  .copy-link-btn:hover,
+  .guhso-social-btn:hover {
+    transform: none;
+  }
+  
+  .social-btn::before,
+  .guhso-social-btn::before {
+    transition: none;
+  }
+  
+  .social-btn:hover::before,
+  .guhso-social-btn:hover::before {
+    left: 0;
+    opacity: 0.1;
+  }
+}
+
+/* Focus states for accessibility */
+.social-btn:focus,
+.copy-link-btn:focus,
+.guhso-social-btn:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.social-btn:focus:not(:focus-visible),
+.copy-link-btn:focus:not(:focus-visible),
+.guhso-social-btn:focus:not(:focus-visible) {
+  outline: none;
+}

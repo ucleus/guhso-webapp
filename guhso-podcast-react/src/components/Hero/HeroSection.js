@@ -1,8 +1,9 @@
 // src/components/Hero/HeroSection.js
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PlayerControls from '../Player/PlayerControls';
 import { usePlayer } from '../../contexts/PlayerContext';
 import { fetchHeroEpisode } from '../../api';
+import { getHeroThumbnail } from '../../utils/thumbnails';
 import './HeroSection.css';
 
 const HeroSection = () => {
@@ -74,10 +75,16 @@ const HeroSection = () => {
     );
   }
 
-  // Create default thumbnail if none provided
-  const thumbnailUrl = heroEpisode.thumbnail_url || 
-                      heroEpisode.itunes_image || 
-                      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1080' height='800'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FF6B35;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23F7931E;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1080' height='800' fill='url(%23g)' /%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='48' fill='white' opacity='0.3'%3EGUHSO PODCAST%3C/text%3E%3C/svg%3E";
+  // Prepare episode data for thumbnail system
+  const episodeForThumbnail = {
+    ...heroEpisode,
+    thumbnail: heroEpisode.thumbnail_url || heroEpisode.itunes_image,
+    heroThumbnail: heroEpisode.hero_thumbnail, // Special hero thumbnail if available
+    id: heroEpisode.id,
+    slug: heroEpisode.slug
+  };
+
+  const thumbnailUrl = getHeroThumbnail(episodeForThumbnail);
 
   // Generate hashtags from episode data
   const hashtags = [
