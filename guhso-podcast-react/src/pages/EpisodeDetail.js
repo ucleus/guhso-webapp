@@ -128,102 +128,103 @@ const EpisodeDetail = () => {
     slug: episode.slug
   };
 
-  return (
-    <div className="episode-detail-page">
-      <div className="episode-detail-container">
-        {/* Main Content */}
-        <div className="episode-detail-content">
-          {/* Breadcrumb */}
-          <nav className="breadcrumb">
-            <Link to="/">Home</Link>
-            <span className="breadcrumb-separator">/</span>
-            <Link to="/episodes">Episodes</Link>
-            <span className="breadcrumb-separator">/</span>
-            <span className="breadcrumb-current">{episode.title}</span>
-          </nav>
+return (
+  <div className="episode-detail-page">
+    <div className="episode-detail-container">
+      {/* Main Content */}
+      <div className="episode-detail-content">
+        {/* Breadcrumb */}
+        <nav className="breadcrumb">
+          <Link to="/">Home</Link>
+          <span className="breadcrumb-separator">/</span>
+          <Link to="/episodes">Episodes</Link>
+          <span className="breadcrumb-separator">/</span>
+          <span className="breadcrumb-current">{episode.title}</span>
+        </nav>
 
-          {/* Episode Header */}
-          <div className="episode-header">
-            <div className="episode-image">
-              <LazyImage 
-                episode={episodeForThumbnail}
-                size="large"
-                alt={episode.title}
-                className="episode-detail-image"
-              />
-              <div className="episode-play-overlay">
-                <button 
-                  className="episode-play-button"
-                  onClick={handlePlayEpisode}
-                >
-                  <i className={`fas ${isThisEpisodePlaying ? 'fa-pause' : 'fa-play'}`}></i>
-                </button>
-              </div>
-            </div>
-
-            <div className="episode-info">
-              <div className="episode-meta">
-                <span className="episode-number">
-                  Episode {episode.episode_number}
-                </span>
-                {episode.season_number && (
-                  <>
-                    <span className="meta-separator">•</span>
-                    <span className="season-number">
-                      Season {episode.season_number}
-                    </span>
-                  </>
-                )}
-                <span className="meta-separator">•</span>
-                <span className="episode-duration">
-                  {episode.itunes_duration || "N/A"}
-                </span>
-              </div>
-
-              <h1 className="episode-title">{episode.title}</h1>
-
-              <div className="episode-details">
-                <div className="episode-detail-item">
-                  <i className="fas fa-calendar"></i>
-                  <span>
-                    {new Date(episode.published_at).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </span>
-                </div>
-                <div className="episode-detail-item">
-                  <i className="fas fa-microphone"></i>
-                  <span>{episode.show?.title || "GUHSO"}</span>
-                </div>
-                {episode.guest_name && (
-                  <div className="episode-detail-item">
-                    <i className="fas fa-user"></i>
-                    <span>Guest: {episode.guest_name}</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Player Controls */}
-              <div className="episode-player-controls">
-                <PlayerControls 
-                  episode={{
-                    id: episode.id,
-                    title: episode.title,
-                    audioUrl: episode.audio_url,
-                    thumbnailUrl: episode.thumbnail_url || episode.thumbnail,
-                    currentTime: "0:00",
-                    totalTime: episode.itunes_duration || "N/A",
-                    progress: 0
-                  }}
-                  onPlayClick={handlePlayEpisode}
-                  variant="default"
-                />
-              </div>
+        {/* Episode Header */}
+        <div className="episode-header">
+          <div className="episode-image">
+            <LazyImage 
+              episode={episodeForThumbnail}
+              size="large"
+              alt={episode.title}
+              className="episode-detail-image"
+            />
+            <div className="episode-play-overlay">
+              <button 
+                className="episode-play-button"
+                onClick={handlePlayEpisode}
+              >
+                <i className={`fas ${isThisEpisodePlaying ? 'fa-pause' : 'fa-play'}`}></i>
+              </button>
             </div>
           </div>
 
+          <div className="episode-info">
+            <div className="episode-meta">
+              <span className="episode-number">
+                Episode {episode.episode_number}
+              </span>
+              {episode.season_number && (
+                <>
+                  <span className="meta-separator">•</span>
+                  <span className="season-number">
+                    Season {episode.season_number}
+                  </span>
+                </>
+              )}
+              <span className="meta-separator">•</span>
+              <span className="episode-duration">
+                {episode.itunes_duration || "N/A"}
+              </span>
+            </div>
+
+            <h1 className="episode-title">{episode.title}</h1>
+
+            <div className="episode-details">
+              <div className="episode-detail-item">
+                <i className="fas fa-calendar"></i>
+                <span>
+                  {new Date(episode.published_at).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </span>
+              </div>
+              <div className="episode-detail-item">
+                <i className="fas fa-microphone"></i>
+                <span>{episode.show?.title || "GUHSO"}</span>
+              </div>
+              {episode.guest_name && (
+                <div className="episode-detail-item">
+                  <i className="fas fa-user"></i>
+                  <span>Guest: {episode.guest_name}</span>
+                </div>
+              )}
+            </div>
+
+            <div className="episode-player-controls">
+              <PlayerControls 
+                episode={{
+                  id: episode.id,
+                  title: episode.title,
+                  audioUrl: episode.audio_url,
+                  thumbnailUrl: episode.thumbnail_url || episode.thumbnail,
+                  currentTime: "0:00",
+                  totalTime: episode.itunes_duration || "N/A",
+                  progress: 0
+                }}
+                onPlayClick={handlePlayEpisode}
+                variant="default"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Content Wrapper - New container to ensure proper stacking */}
+        <div className="episode-content-wrapper">
           {/* Episode Description */}
           <section className="episode-description-section">
             <div className="episode-description">
@@ -266,25 +267,26 @@ const EpisodeDetail = () => {
               </div>
             </section>
           )}
-
-          {/* Social Media Links */}
-          <section className="episode-social-section">
-            <div className="episode-social">
-              <h3>Share This Episode</h3>
-              <SocialMediaLinks episode={episode} />
-            </div>
-          </section>
         </div>
 
-        {/* Sidebar */}
-        <div className="episode-detail-sidebar">
-          <FeaturedSection />
-          <SearchSection />
-          <AdCard />
-        </div>
+        {/* Social Media Links - Now guaranteed to be below all content */}
+        <section className="episode-social-section">
+          <div className="episode-social">
+            <h3>Share This Episode</h3>
+            <SocialMediaLinks episode={episode} />
+          </div>
+        </section>
+      </div>
+
+      {/* Sidebar */}
+      <div className="episode-detail-sidebar">
+        <FeaturedSection />
+        <SearchSection />
+        <AdCard />
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default EpisodeDetail;

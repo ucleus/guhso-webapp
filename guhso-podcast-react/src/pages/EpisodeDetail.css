@@ -231,6 +231,8 @@
 }
 
 .description-content {
+  margin-bottom: 0;
+  padding-bottom: 0;
   word-wrap: break-word;
   overflow-wrap: break-word;
   max-width: 100%;
@@ -378,15 +380,34 @@
 .episode-tags-section {
   display: block;
   width: 100%;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
+}
+
+.episode-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .episode-social-section {
-  display: block;
+   margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   width: 100%;
-  margin: 3rem 0 2rem;
-  position: static;
-  clear: both;
+  position: relative;
+  z-index: 1;
+}
+
+.episode-social {
+  width: 100%;
+}
+
+/* Ensure description section has proper spacing */
+.episode-description-section {
+  margin-bottom: 2rem;
 }
 
 /* Sidebar */
