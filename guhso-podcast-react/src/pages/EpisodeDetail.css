@@ -390,13 +390,9 @@
 .episode-social-section {
   display: block;
   width: 100%;
-  margin-bottom: 2rem;
-  margin-top: 3rem;
-  position: relative;
-  top: auto;
-  left: auto;
-  right: auto;
-  bottom: auto;
+  margin: 3rem 0 2rem;
+  position: static;
+  clear: both;
 }
 
 /* Sidebar */
