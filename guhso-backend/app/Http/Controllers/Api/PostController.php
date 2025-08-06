@@ -77,7 +77,8 @@ class PostController extends Controller
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'status' => ['required', Rule::in(['draft', 'published', 'private'])],
             'published_at' => 'nullable|date',
-            'user_id' => 'required|exists:users,id',
+            // User ID is optional; defaults to authenticated user if not provided
+            'user_id' => 'nullable|exists:users,id',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
             'tags' => 'nullable|array',
@@ -92,6 +93,11 @@ class PostController extends Controller
             $validated['cover_image'] = $request->file('cover_image')->store('posts/covers', 'public');
         }
         
+        // Ensure the post is attributed to the authenticated user if none provided
+        if (!isset($validated['user_id'])) {
+            $validated['user_id'] = $request->user()->id;
+        }
+
         // Set published_at if status is published and no date provided
         if ($validated['status'] === 'published' && !isset($validated['published_at'])) {
             $validated['published_at'] = now();
@@ -120,7 +126,8 @@ class PostController extends Controller
             'cover_image' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'status' => ['sometimes', Rule::in(['draft', 'published', 'private'])],
             'published_at' => 'sometimes|nullable|date',
-            'user_id' => 'sometimes|exists:users,id',
+            // Allow user_id to be omitted; defaults to authenticated user
+            'user_id' => 'sometimes|nullable|exists:users,id',
             'meta_title' => 'sometimes|nullable|string|max:255',
             'meta_description' => 'sometimes|nullable|string|max:500',
             'tags' => 'sometimes|nullable|array',
@@ -139,6 +146,11 @@ class PostController extends Controller
             $validated['cover_image'] = $request->file('cover_image')->store('posts/covers', 'public');
         }
         
+        // Ensure the post remains attributed to the authenticated user if none provided
+        if (!isset($validated['user_id'])) {
+            $validated['user_id'] = $request->user()->id;
+        }
+
         // Set published_at if status changed to published and no date provided
         if (isset($validated['status']) && $validated['status'] === 'published' && !$post->published_at && !isset($validated['published_at'])) {
             $validated['published_at'] = now();
