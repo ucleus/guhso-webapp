@@ -38,22 +38,37 @@ class Post extends Model
         'view_count' => 'integer',
     ];
 
+    protected static function generateUniqueSlug(string $title, $ignoreId = null): string
+    {
+        $slug = Str::slug($title);
+        $original = $slug;
+        $count = 1;
+
+        while (static::where('slug', $slug)
+            ->when($ignoreId, fn($query) => $query->where('id', '!=', $ignoreId))
+            ->exists()) {
+            $slug = $original.'-'.$count++;
+        }
+
+        return $slug;
+    }
+
     protected static function boot()
     {
         parent::boot();
-        
+
         static::creating(function ($post) {
             if (empty($post->slug)) {
-                $post->slug = Str::slug($post->title);
+                $post->slug = static::generateUniqueSlug($post->title);
             }
             if (empty($post->excerpt) && !empty($post->body)) {
                 $post->excerpt = Str::limit(strip_tags($post->body), 160);
             }
         });
-        
+
         static::updating(function ($post) {
             if ($post->isDirty('title') && empty($post->slug)) {
-                $post->slug = Str::slug($post->title);
+                $post->slug = static::generateUniqueSlug($post->title, $post->id);
             }
             if ($post->isDirty('body') && empty($post->excerpt)) {
                 $post->excerpt = Str::limit(strip_tags($post->body), 160);
