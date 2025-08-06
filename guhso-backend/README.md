@@ -64,3 +64,14 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## API Notes
+
+### Blog Post Tags
+
+When creating or updating posts through the API, the `tags` field accepts either:
+
+- An array of tag strings: `{"tags": ["laravel", "php"]}`
+- A single comma-separated string: `{"tags": "laravel, php"}`
+
+Comma-separated strings are automatically converted into arrays by the API.
