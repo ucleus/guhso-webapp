@@ -81,13 +81,13 @@ class PostController extends Controller
             'user_id' => 'nullable|exists:users,id',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
-            'tags' => 'nullable|array',
+            'tags' => 'nullable',
             'tags.*' => 'string|max:50',
             'is_featured' => 'boolean',
             'allow_comments' => 'boolean',
             'is_sticky' => 'boolean',
         ]);
-        
+
         // Handle cover image upload
         if ($request->hasFile('cover_image')) {
             $validated['cover_image'] = $request->file('cover_image')->store('posts/covers', 'public');
@@ -96,6 +96,11 @@ class PostController extends Controller
         // Ensure the post is attributed to the authenticated user if none provided
         if (!isset($validated['user_id'])) {
             $validated['user_id'] = $request->user()->id;
+        }
+
+        // Normalize tags string to array
+        if (isset($validated['tags']) && is_string($validated['tags'])) {
+            $validated['tags'] = array_map('trim', explode(',', $validated['tags']));
         }
 
         // Set published_at if status is published and no date provided
@@ -130,7 +135,7 @@ class PostController extends Controller
             'user_id' => 'sometimes|nullable|exists:users,id',
             'meta_title' => 'sometimes|nullable|string|max:255',
             'meta_description' => 'sometimes|nullable|string|max:500',
-            'tags' => 'sometimes|nullable|array',
+            'tags' => 'sometimes|nullable',
             'tags.*' => 'string|max:50',
             'is_featured' => 'sometimes|boolean',
             'allow_comments' => 'sometimes|boolean',
@@ -146,6 +151,11 @@ class PostController extends Controller
             $validated['cover_image'] = $request->file('cover_image')->store('posts/covers', 'public');
         }
         
+        // Normalize tags string to array
+        if (isset($validated['tags']) && is_string($validated['tags'])) {
+            $validated['tags'] = array_map('trim', explode(',', $validated['tags']));
+        }
+
         // Ensure the post remains attributed to the authenticated user if none provided
         if (!isset($validated['user_id'])) {
             $validated['user_id'] = $request->user()->id;
