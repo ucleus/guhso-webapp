@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Validation\Rule;
 
 class PostController extends Controller
@@ -90,7 +90,12 @@ class PostController extends Controller
 
         // Handle cover image upload
         if ($request->hasFile('cover_image')) {
-            $validated['cover_image'] = $request->file('cover_image')->store('posts/covers', 'public');
+            $directory = public_path('images/post');
+            File::ensureDirectoryExists($directory);
+            $image = $request->file('cover_image');
+            $filename = time().'_'.$image->getClientOriginalName();
+            $image->move($directory, $filename);
+            $validated['cover_image'] = 'images/post/'.$filename;
         }
         
         // Ensure the post is attributed to the authenticated user if none provided
@@ -144,11 +149,15 @@ class PostController extends Controller
         
         // Handle cover image upload
         if ($request->hasFile('cover_image')) {
-            // Delete old cover image
-            if ($post->cover_image) {
-                Storage::disk('public')->delete($post->cover_image);
+            if ($post->cover_image && File::exists(public_path($post->cover_image))) {
+                File::delete(public_path($post->cover_image));
             }
-            $validated['cover_image'] = $request->file('cover_image')->store('posts/covers', 'public');
+            $directory = public_path('images/post');
+            File::ensureDirectoryExists($directory);
+            $image = $request->file('cover_image');
+            $filename = time().'_'.$image->getClientOriginalName();
+            $image->move($directory, $filename);
+            $validated['cover_image'] = 'images/post/'.$filename;
         }
         
         // Normalize tags string to array
@@ -174,8 +183,8 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         // Delete cover image if exists
-        if ($post->cover_image) {
-            Storage::disk('public')->delete($post->cover_image);
+        if ($post->cover_image && File::exists(public_path($post->cover_image))) {
+            File::delete(public_path($post->cover_image));
         }
         
         $post->delete();
@@ -190,24 +199,29 @@ class PostController extends Controller
         ]);
         
         // Delete old cover image
-        if ($post->cover_image) {
-            Storage::disk('public')->delete($post->cover_image);
+        if ($post->cover_image && File::exists(public_path($post->cover_image))) {
+            File::delete(public_path($post->cover_image));
         }
-        
-        $path = $request->file('cover_image')->store('posts/covers', 'public');
+
+        $directory = public_path('images/post');
+        File::ensureDirectoryExists($directory);
+        $image = $request->file('cover_image');
+        $filename = time().'_'.$image->getClientOriginalName();
+        $image->move($directory, $filename);
+        $path = 'images/post/'.$filename;
         $post->update(['cover_image' => $path]);
-        
+
         return response()->json([
             'message' => 'Cover image uploaded successfully',
             'cover_image' => $path,
-            'cover_image_url' => Storage::url($path)
+            'cover_image_url' => url($path)
         ]);
     }
     
     public function deleteCoverImage(Post $post)
     {
-        if ($post->cover_image) {
-            Storage::disk('public')->delete($post->cover_image);
+        if ($post->cover_image && File::exists(public_path($post->cover_image))) {
+            File::delete(public_path($post->cover_image));
             $post->update(['cover_image' => null]);
         }
         
