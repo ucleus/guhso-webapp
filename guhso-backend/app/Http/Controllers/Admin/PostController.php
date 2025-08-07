@@ -7,8 +7,10 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class PostController extends Controller
 {
@@ -75,7 +77,14 @@ class PostController extends Controller
         
         // Handle cover image upload
         if ($request->hasFile('cover_image')) {
-            $validated['cover_image'] = $request->file('cover_image')->store('posts/covers', 'public');
+            try {
+                $validated['cover_image'] = $request->file('cover_image')->store('posts/covers', 'public');
+            } catch (\Exception $e) {
+                Log::error('Cover image upload failed', ['error' => $e->getMessage()]);
+                throw ValidationException::withMessages([
+                    'cover_image' => 'Unable to upload cover image. Please ensure you have sufficient permissions or the file size is within limits.',
+                ]);
+            }
         }
         
         // Convert tags string to array
@@ -143,7 +152,14 @@ class PostController extends Controller
             if ($post->cover_image) {
                 Storage::disk('public')->delete($post->cover_image);
             }
-            $validated['cover_image'] = $request->file('cover_image')->store('posts/covers', 'public');
+            try {
+                $validated['cover_image'] = $request->file('cover_image')->store('posts/covers', 'public');
+            } catch (\Exception $e) {
+                Log::error('Cover image upload failed', ['error' => $e->getMessage()]);
+                throw ValidationException::withMessages([
+                    'cover_image' => 'Unable to upload cover image. Please ensure you have sufficient permissions or the file size is within limits.',
+                ]);
+            }
         }
         
         // Convert tags string to array
