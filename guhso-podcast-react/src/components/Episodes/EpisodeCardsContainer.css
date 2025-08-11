@@ -84,7 +84,7 @@
     opacity: 0;
 }
 
-.episode-cards-container::after {
+/* .episode-cards-container::after {
     right: 0;
     background: linear-gradient(
         to left,
@@ -92,7 +92,7 @@
         rgba(42, 42, 42, 0.8) 50%,
         transparent 100%
     );
-}
+} */
 
 /* Show left fade when scrolled */
 .episode-cards-container.scrolled-left::before {
