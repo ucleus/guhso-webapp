@@ -6,9 +6,9 @@ import './Navbar.css';
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const handleDonateClick = () => {
-    // Handle donation logic here
-    console.log('Donate button clicked');
+  const handleBigupClick = () => {
+    // Handle registration/donation logic here
+    window.location.href = '/registration';
   };
 
   const toggleMobileMenu = () => {
@@ -53,7 +53,7 @@ const Navbar = () => {
         ))}
       </ul>
       
-      <button className="donate-btn" onClick={handleDonateClick}>
+      <button className="bigup-btn" onClick={handleBigupClick}>
         Donate
       </button>
     </nav>

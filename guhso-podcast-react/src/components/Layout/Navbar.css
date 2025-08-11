@@ -43,7 +43,7 @@
     color: var(--primary-color);
 }
 
-.donate-btn {
+.bigup-btn {
     background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
     color: white;
     border: none;
@@ -55,7 +55,7 @@
     flex-shrink: 0;
 }
 
-.donate-btn:hover {
+.bigup-btn:hover {
     transform: scale(1.05);
 }
 
@@ -145,7 +145,7 @@
         color: var(--primary-color);
     }
     
-    .donate-btn {
+    .bigup-btn {
         padding: 0.4rem 1rem;
         font-size: 0.9rem;
     }
@@ -160,7 +160,7 @@
         font-size: 1.1rem;
     }
     
-    .donate-btn {
+    .bigup-btn {
         padding: 0.35rem 0.8rem;
         font-size: 0.8rem;
     }
@@ -208,7 +208,7 @@
         transition: none;
     }
     
-    .donate-btn {
+    .bigup-btn {
         transition: none;
     }
     

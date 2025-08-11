@@ -12,6 +12,7 @@ import EpisodeDetail from './pages/EpisodeDetail';
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
 import AboutPage from './pages/AboutPage';
+import RegistrationPage from './pages/RegistrationPage';
 import { fetchPosts } from './api';
 import { PlayerProvider } from './contexts/PlayerContext';
 import './App.css';
@@ -88,6 +89,12 @@ function App() {
             <Route
               path="/about"
               element={<AboutPage />}
+            />
+
+            {/* Registration Page */}
+            <Route
+              path="/registration"
+              element={<RegistrationPage />}
             />
             
             {/* Fallback for unknown routes */}
