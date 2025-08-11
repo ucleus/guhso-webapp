@@ -11,6 +11,7 @@ import Episodes from './pages/Episodes';
 import EpisodeDetail from './pages/EpisodeDetail';
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
+import AboutPage from './pages/AboutPage';
 import { fetchPosts } from './api';
 import { PlayerProvider } from './contexts/PlayerContext';
 import './App.css';
@@ -81,6 +82,12 @@ function App() {
             <Route
               path="/blog/:slug"
               element={<BlogDetail />}
+            />
+
+            {/* About Page */}
+            <Route
+              path="/about"
+              element={<AboutPage />}
             />
             
             {/* Fallback for unknown routes */}

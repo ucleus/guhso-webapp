@@ -84,6 +84,7 @@ body {
     background-clip: text;
 }
 
+
 .loading-container {
     display: flex;
     flex-direction: column;

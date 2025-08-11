@@ -25,7 +25,7 @@ const Navbar = () => {
     { href: '#tech', label: 'Tech' },
     { href: '#merch', label: 'Merch'},
     { href: '#advertise', label: 'Advertise' },
-    { href: '#whatisguhso', label: 'What Is Guhso'}
+    { href: '/about', label: 'What Is Guhso'}
   ];
 
   return (
