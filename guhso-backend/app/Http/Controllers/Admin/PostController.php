@@ -53,6 +53,8 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        \Log::info('Post creation attempt', ['data' => $request->all()]);
+        
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:255', 'unique:posts'],
@@ -102,9 +104,15 @@ class PostController extends Controller
             $validated['published_at'] = now();
         }
 
-        Post::create($validated);
+        try {
+            $post = Post::create($validated);
+            \Log::info('Post created successfully', ['post_id' => $post->id]);
 
-        return redirect()->route('dashboard.posts.index')->with('success', 'Post created successfully.');
+            return redirect()->route('dashboard.posts')->with('success', 'Post created successfully.');
+        } catch (\Exception $e) {
+            \Log::error('Post creation failed', ['error' => $e->getMessage()]);
+            return back()->withInput()->with('error', 'Failed to create post: ' . $e->getMessage());
+        }
     }
     
     /**
@@ -179,7 +187,7 @@ class PostController extends Controller
 
         $post->update($validated);
 
-        return redirect()->route('dashboard.posts.index')->with('success', 'Post updated successfully.');
+        return redirect()->route('dashboard.posts')->with('success', 'Post updated successfully.');
     }
     
     /**
@@ -194,6 +202,6 @@ class PostController extends Controller
         
         $post->delete();
         
-        return redirect()->route('dashboard.posts.index')->with('success', 'Post deleted successfully.');
+        return redirect()->route('dashboard.posts')->with('success', 'Post deleted successfully.');
     }
 }

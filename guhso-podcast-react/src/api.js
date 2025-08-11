@@ -68,14 +68,17 @@ export async function fetchFeaturedPosts() {
 
 export async function fetchPosts() {
   const res = await fetch(`${API_URL}/posts`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch posts: ${res.status}`);
+  }
   return res.json();
 }
 
-export async function createPost(post) {
-  const res = await fetch(`${API_URL}/posts`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(post),
-  });
+export async function fetchPostBySlug(slug) {
+  const res = await fetch(`${API_URL}/posts/${slug}`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch post: ${res.status}`);
+  }
   return res.json();
 }
+

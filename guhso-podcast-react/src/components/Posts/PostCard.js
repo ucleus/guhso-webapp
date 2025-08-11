@@ -9,15 +9,16 @@ const PostCard = ({ post }) => {
   // Prepare post data for thumbnail system
   const postForThumbnail = {
     ...post,
-    thumbnail: post.thumbnail || post.thumbnail_url || post.image,
+    thumbnail: post.cover_image || post.thumbnail || post.thumbnail_url || post.image,
     id: post.id,
     slug: post.slug,
   };
 
-  const description =
-    post.body && post.body.length > 120
+  // Use excerpt if available, otherwise truncate body
+  const description = post.excerpt || 
+    (post.body && post.body.length > 120
       ? `${post.body.substring(0, 120)}...`
-      : post.body;
+      : post.body);
 
   return (
     <Link to={`/blog/${post.slug || post.id}`} className="post-card">

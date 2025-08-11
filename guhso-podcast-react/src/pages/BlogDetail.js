@@ -4,7 +4,7 @@ import LazyImage from '../components/LazyImage/LazyImage';
 import FeaturedSection from '../components/Sidebar/FeaturedSection';
 import SearchSection from '../components/Sidebar/SearchSection';
 import TagSection from '../components/Sidebar/TagSection';
-import { fetchPosts } from '../api';
+import { fetchPostBySlug } from '../api';
 import './BlogDetail.css';
 
 const BlogDetail = () => {
@@ -17,15 +17,9 @@ const BlogDetail = () => {
     const loadPost = async () => {
       try {
         setLoading(true);
-        const data = await fetchPosts();
-        const posts = data.data || data;
-        const found = posts.find(p => p.slug === slug || p.id.toString() === slug);
-        if (found) {
-          setPost(found);
-          setError(null);
-        } else {
-          setError('Post not found');
-        }
+        const data = await fetchPostBySlug(slug);
+        setPost(data);
+        setError(null);
       } catch (err) {
         console.error('Failed to load post:', err);
         setError(err.message);
@@ -68,7 +62,7 @@ const BlogDetail = () => {
 
   const postForThumbnail = {
     ...post,
-    thumbnail: post.thumbnail || post.thumbnail_url || post.image,
+    thumbnail: post.cover_image || post.thumbnail || post.thumbnail_url || post.image,
     id: post.id,
     slug: post.slug,
   };
