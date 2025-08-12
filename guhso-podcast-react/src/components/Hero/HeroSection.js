@@ -121,13 +121,7 @@ const HeroSection = () => {
               )}
               <span>{heroEpisode.show?.title || "GUHSO"}</span>
             </div>
-            {heroEpisode.description && (
-              <p className="hero-description">
-                {heroEpisode.description.length > 150 
-                  ? `${heroEpisode.description.substring(0, 150)}...` 
-                  : heroEpisode.description}
-              </p>
-            )}
+            
             <div className="hashtags">
               {hashtags.map((tag, index) => (
                 <span key={index} className="hashtag">{tag}</span>

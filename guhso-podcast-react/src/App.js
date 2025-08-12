@@ -93,7 +93,7 @@ function App() {
 
             {/* Registration Page */}
             <Route
-              path="/registration"
+              path="/donation"
               element={<RegistrationPage />}
             />
             

@@ -8,7 +8,7 @@ const Navbar = () => {
 
   const handleBigupClick = () => {
     // Handle registration/donation logic here
-    window.location.href = '/registration';
+    window.location.href = '/donation';
   };
 
   const toggleMobileMenu = () => {

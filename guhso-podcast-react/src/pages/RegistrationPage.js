@@ -1,10 +1,18 @@
 // src/pages/RegistrationPage.js
 import React, { useState, useEffect } from 'react';
 import DonationHeroSection from '../components/Hero/DonationHeroSection';
+import DonationTiers from '../components/Donation/DonationTiers';
+import DonationCart from '../components/Donation/DonationCart';
+import PaymentForm from '../components/Donation/PaymentForm';
+import { DonationCartProvider, useDonationCart } from '../contexts/DonationCartContext';
+import { ToastProvider } from '../contexts/ToastContext';
 import './RegistrationPage.css';
 
-const RegistrationPage = () => {
+// Main page component with donation functionality
+const RegistrationPageContent = () => {
   const [isVisible, setIsVisible] = useState({});
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const { addToCart } = useDonationCart();
 
   useEffect(() => {
     // Animate sections on scroll
@@ -25,6 +33,41 @@ const RegistrationPage = () => {
 
     return () => observer.disconnect();
   }, []);
+
+  // Load Square Web Payments SDK
+  useEffect(() => {
+    if (!window.Square) {
+      const script = document.createElement('script');
+      script.src = 'https://sandbox.web.squarecdn.com/v1/square.js'; // Use production URL for live
+      script.async = true;
+      script.onload = () => {
+        console.log('Square Web Payments SDK loaded');
+      };
+      script.onerror = () => {
+        console.error('Failed to load Square Web Payments SDK');
+      };
+      document.head.appendChild(script);
+
+      return () => {
+        if (document.head.contains(script)) {
+          document.head.removeChild(script);
+        }
+      };
+    }
+  }, []);
+
+  const handleAddToCart = (tier) => {
+    addToCart(tier);
+  };
+
+  const handleCheckout = () => {
+    setShowPaymentForm(true);
+  };
+
+  const handlePaymentSuccess = (result) => {
+    console.log('Payment successful:', result);
+    setShowPaymentForm(false);
+  };
 
   const supportOptions = [
     {
@@ -98,6 +141,22 @@ const RegistrationPage = () => {
           </div>
         </section>
 
+        {/* Donation Tiers Section */}
+        <section 
+          id="donation-tiers" 
+          className={`registration-section donation-tiers-section ${isVisible['donation-tiers'] ? 'visible' : ''}`}
+        >
+          <DonationTiers onAddToCart={handleAddToCart} />
+        </section>
+
+        {/* Donation Cart */}
+        <section 
+          id="donation-cart" 
+          className={`registration-section cart-section ${isVisible['donation-cart'] ? 'visible' : ''}`}
+        >
+          <DonationCart onCheckout={handleCheckout} />
+        </section>
+
         {/* Call to Action */}
         <section 
           id="registration-cta" 
@@ -107,14 +166,6 @@ const RegistrationPage = () => {
             <h2>Ready to Show Some Love?</h2>
             <p>Choose how you want to support the Guhso movement:</p>
             <div className="cta-buttons">
-              <a href="#" className="cta-btn primary">
-                <i className="fas fa-heart"></i>
-                <span>One-Time Bigup</span>
-              </a>
-              <a href="#" className="cta-btn secondary">
-                <i className="fas fa-calendar-alt"></i>
-                <span>Monthly Support</span>
-              </a>
               <a href="#" className="cta-btn tertiary">
                 <i className="fas fa-share-alt"></i>
                 <span>Share the Vibes</span>
@@ -147,7 +198,25 @@ const RegistrationPage = () => {
           </div>
         </section>
       </div>
+
+      {/* Payment Form Modal */}
+      <PaymentForm 
+        isOpen={showPaymentForm}
+        onClose={() => setShowPaymentForm(false)}
+        onSuccess={handlePaymentSuccess}
+      />
     </div>
+  );
+};
+
+// Main component wrapped with providers
+const RegistrationPage = () => {
+  return (
+    <ToastProvider>
+      <DonationCartProvider>
+        <RegistrationPageContent />
+      </DonationCartProvider>
+    </ToastProvider>
   );
 };
 

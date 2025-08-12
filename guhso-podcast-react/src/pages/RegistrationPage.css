@@ -343,8 +343,20 @@
   .content-section,
   .support-section,
   .cta-section,
-  .contact-section {
+  .contact-section,
+  .donation-tiers-section,
+  .cart-section {
     padding: 2rem 0;
+  }
+
+  /* Donation sections specific styling */
+  .donation-tiers-section .donation-section {
+    margin: 0;
+    padding: 40px 15px;
+  }
+
+  .cart-section .donation-cart {
+    margin: 0;
   }
 
   .content-text {
