@@ -38,7 +38,12 @@ const RegistrationPageContent = () => {
   useEffect(() => {
     if (!window.Square) {
       const script = document.createElement('script');
-      script.src = 'https://sandbox.web.squarecdn.com/v1/square.js'; // Use production URL for live
+      const environment = process.env.REACT_APP_SQUARE_ENVIRONMENT || 'sandbox';
+      
+      // Use appropriate Square SDK URL based on environment
+      script.src = environment === 'production' 
+        ? 'https://web.squarecdn.com/v1/square.js'
+        : 'https://sandbox.web.squarecdn.com/v1/square.js';
       script.async = true;
       script.onload = () => {
         console.log('Square Web Payments SDK loaded');

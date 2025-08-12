@@ -16,13 +16,19 @@ class SquarePaymentService {
         throw new Error('Square Web Payments SDK not loaded');
       }
 
-      const appId = process.env.REACT_APP_SQUARE_APP_ID || 'sandbox-sq0idb-YOUR_APP_ID_HERE';
-      const locationId = process.env.REACT_APP_SQUARE_LOCATION_ID || 'YOUR_LOCATION_ID_HERE';
+      // Get Square credentials from environment variables
+      const appId = process.env.REACT_APP_SQUARE_APP_ID;
+      const locationId = process.env.REACT_APP_SQUARE_LOCATION_ID;
+      const environment = process.env.REACT_APP_SQUARE_ENVIRONMENT || 'sandbox';
+
+      if (!appId || !locationId) {
+        throw new Error('Square App ID and Location ID must be configured in environment variables');
+      }
 
       this.payments = window.Square.payments(appId, locationId);
       this.isInitialized = true;
       
-      console.log('Square Payments initialized successfully');
+      console.log(`Square Payments initialized successfully in ${environment} mode`);
     } catch (error) {
       console.error('Failed to initialize Square Payments:', error);
       throw error;
