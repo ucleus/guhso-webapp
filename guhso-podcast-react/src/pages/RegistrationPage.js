@@ -74,26 +74,6 @@ const RegistrationPageContent = () => {
     setShowPaymentForm(false);
   };
 
-  const supportOptions = [
-    {
-      title: 'Support the Movement',
-      description: 'Help us keep the vibes flowing and the conversation real.',
-      icon: 'fas fa-heart',
-      color: '#FF6B35'
-    },
-    {
-      title: 'Spread the Word',
-      description: 'Share episodes with your crew and help us grow the community.',
-      icon: 'fas fa-share-alt',
-      color: '#F7931E'
-    },
-    {
-      title: 'Join the Conversation',
-      description: 'Follow us on social media and be part of the Guhso family.',
-      icon: 'fas fa-comments',
-      color: '#FF6B35'
-    }
-  ];
 
   return (
     <div className="registration-page">
@@ -101,25 +81,6 @@ const RegistrationPageContent = () => {
       <DonationHeroSection />
       
       <div className="registration-container">
-
-        {/* Support Options */}
-        <section 
-          id="support-options" 
-          className={`registration-section support-section ${isVisible['support-options'] ? 'visible' : ''}`}
-        >
-          <h2>How You Can Bigup</h2>
-          <div className="support-grid">
-            {supportOptions.map((option, index) => (
-              <div key={index} className="support-card">
-                <div className="card-icon" style={{ backgroundColor: option.color }}>
-                  <i className={option.icon}></i>
-                </div>
-                <h3>{option.title}</h3>
-                <p>{option.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
 
         {/* Main Content */}
         <section 

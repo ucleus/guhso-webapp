@@ -6,7 +6,7 @@ import { fetchHeroEpisode } from '../../api';
 import { getHeroThumbnail } from '../../utils/thumbnails';
 import './HeroSection.css';
 
-const HeroSection = () => {
+const HeroSection = ({ onEpisodeLoad }) => {
   const { playEpisode } = usePlayer();
   const [heroEpisode, setHeroEpisode] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -19,11 +19,16 @@ const HeroSection = () => {
         const episode = await fetchHeroEpisode();
         setHeroEpisode(episode);
         setError(null);
+        
+        // Pass episode data to parent component
+        if (onEpisodeLoad) {
+          onEpisodeLoad(episode);
+        }
       } catch (err) {
         console.error('Failed to fetch hero episode:', err);
         setError(err.message);
         // Fallback to default episode data
-        setHeroEpisode({
+        const fallbackEpisode = {
           id: 1,
           title: "Welcome to GUHSO Podcast",
           episode_number: "1",
@@ -32,8 +37,14 @@ const HeroSection = () => {
           thumbnail_url: null,
           audio_url: "/audio/default.mp3",
           itunes_duration: "30:00",
-          description: "Welcome to our podcast!"
-        });
+          description: "Welcome to our podcast! Join us as we dive into authentic Jamaican conversations, real talk, and cultural discussions that matter. Every episode brings you closer to the culture and community that makes GUHSO special."
+        };
+        setHeroEpisode(fallbackEpisode);
+        
+        // Pass fallback episode data to parent component
+        if (onEpisodeLoad) {
+          onEpisodeLoad(fallbackEpisode);
+        }
       } finally {
         setLoading(false);
       }

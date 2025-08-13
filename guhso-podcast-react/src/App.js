@@ -1,52 +1,37 @@
 // src/App.js
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Layout/Navbar';
 import HeroSection from './components/Hero/HeroSection';
 import TwoColumnSection from './components/Layout/TwoColumnSection';
 import Sidebar from './components/Sidebar/Sidebar';
 import FloatingPlayer from './components/Player/FloatingPlayer';
-import PostList from './components/Posts/PostList';
 import Episodes from './pages/Episodes';
 import EpisodeDetail from './pages/EpisodeDetail';
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
 import AboutPage from './pages/AboutPage';
 import RegistrationPage from './pages/RegistrationPage';
-import { fetchPosts } from './api';
 import { PlayerProvider } from './contexts/PlayerContext';
 import './App.css';
 
 // Home Page Component
-const HomePage = ({ posts }) => (
-  <div className="main-container">
-    <div className="left-section">
-      <HeroSection />
-      
-      {/* Posts Section */}
-      {posts.length > 0 && <PostList posts={posts} />}
-      
-      <TwoColumnSection />
+const HomePage = () => {
+  const [currentEpisode, setCurrentEpisode] = useState(null);
+
+  return (
+    <div className="main-container">
+      <div className="left-section">
+        <HeroSection onEpisodeLoad={setCurrentEpisode} />
+        
+        <TwoColumnSection currentEpisode={currentEpisode} />
+      </div>
+      <Sidebar />
     </div>
-    <Sidebar />
-  </div>
-);
+  );
+};
 
 function App() {
-  const [posts, setPosts] = useState([]);
-
-  const loadPosts = async () => {
-    try {
-      const data = await fetchPosts();
-      setPosts(data.data || data);
-    } catch (err) {
-      console.error('Failed to load posts:', err);
-    }
-  };
-
-  useEffect(() => {
-    loadPosts();
-  }, []);
 
   return (
     <PlayerProvider>
@@ -58,7 +43,7 @@ function App() {
             {/* Home Page */}
             <Route 
               path="/" 
-              element={<HomePage posts={posts} />} 
+              element={<HomePage />} 
             />
             
             {/* Episodes Page */}
