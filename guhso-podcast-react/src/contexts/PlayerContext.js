@@ -18,6 +18,7 @@ export const PlayerProvider = ({ children }) => {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isFloatingPlayerVisible, setIsFloatingPlayerVisible] = useState(false);
+  const [isPlayerMinimized, setIsPlayerMinimized] = useState(false);
   const [volume, setVolume] = useState(1);
   const audioRef = useRef(null);
 
@@ -154,6 +155,10 @@ export const PlayerProvider = ({ children }) => {
     setIsFloatingPlayerVisible(!isFloatingPlayerVisible);
   };
 
+  const togglePlayerMinimized = () => {
+    setIsPlayerMinimized(!isPlayerMinimized);
+  };
+
   // Audio event handlers
   const handleTimeUpdate = () => {
     if (audioRef.current) {
@@ -187,6 +192,7 @@ export const PlayerProvider = ({ children }) => {
     duration,
     currentTime,
     isFloatingPlayerVisible,
+    isPlayerMinimized,
     volume,
     audioRef,
     
@@ -200,6 +206,7 @@ export const PlayerProvider = ({ children }) => {
     skipBackward,
     setVolumeLevel,
     toggleFloatingPlayer,
+    togglePlayerMinimized,
     
     // Utilities
     formatTime,

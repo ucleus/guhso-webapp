@@ -1,13 +1,22 @@
 // src/components/Episodes/EpisodeCard.js
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { usePlayer } from '../../contexts/PlayerContext';
 import LazyImage from '../LazyImage/LazyImage';
 import './EpisodeCard.css';
 
 const EpisodeCard = ({ episode }) => {
+  const navigate = useNavigate();
   const { playEpisode, currentEpisode, isPlaying } = usePlayer();
 
   const handleCardClick = () => {
+    // Navigate to episode detail page
+    const episodeSlug = episode.slug || `episode-${episode.id}`;
+    navigate(`/episode/${episodeSlug}`);
+  };
+
+  const handlePlayClick = (e) => {
+    e.stopPropagation(); // Prevent card click when clicking play button
     playEpisode({
       id: episode.id,
       title: episode.title,
@@ -40,7 +49,7 @@ const EpisodeCard = ({ episode }) => {
           className="episode-card-image"
         />
         <div className="play-overlay">
-          <div className="play-button">
+          <div className="play-button" onClick={handlePlayClick}>
             <i className={`fas ${isThisEpisodePlaying ? 'fa-pause' : 'fa-play'}`}></i>
           </div>
         </div>

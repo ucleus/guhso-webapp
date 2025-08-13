@@ -6,7 +6,7 @@
     padding: 1rem 0;
     cursor: grab;
     scrollbar-width: thin;
-    scrollbar-color: var(--primary-color) var(--light-bg);
+    scrollbar-color: #FF6B35 #2a2a2a;
     position: relative;
 }
 
@@ -20,19 +20,19 @@
 }
 
 .episode-cards-container::-webkit-scrollbar-track {
-    background: var(--light-bg);
+    background: #2a2a2a;
     border-radius: 4px;
     margin: 0 1rem;
 }
 
 .episode-cards-container::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
+    background: #FF6B35;
     border-radius: 4px;
     transition: background 0.3s ease;
 }
 
 .episode-cards-container::-webkit-scrollbar-thumb:hover {
-    background: var(--secondary-color);
+    background: #F7931E;
 }
 
 /* Hide scrollbar on mobile for cleaner look */

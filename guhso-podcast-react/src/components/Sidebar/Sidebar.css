@@ -1,7 +1,7 @@
 /* Right Section (Sidebar) */
 .right-section {
     width: 350px;
-    height: calc(100vh - 70px);
+    height: 100vh;
     overflow-y: auto;
     padding-left: 1rem;
     display: flex;

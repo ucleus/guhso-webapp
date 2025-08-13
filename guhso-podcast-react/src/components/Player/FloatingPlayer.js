@@ -6,6 +6,7 @@ import './FloatingPlayer.css';
 const FloatingPlayer = () => {
   const { 
     isFloatingPlayerVisible,
+    isPlayerMinimized,
     currentEpisode,
     isPlaying,
     progress,
@@ -17,7 +18,8 @@ const FloatingPlayer = () => {
     seekTo,
     formatTime,
     volume,
-    setVolumeLevel
+    setVolumeLevel,
+    togglePlayerMinimized
   } = usePlayer();
 
   if (!isFloatingPlayerVisible || !currentEpisode) {
@@ -37,8 +39,20 @@ const FloatingPlayer = () => {
     setVolumeLevel(volume > 0 ? 0 : 1);
   };
 
+  const handlePlayerClick = (e) => {
+    if (isPlayerMinimized) {
+      togglePlayerMinimized();
+    } else {
+      // Prevent any clicks when not minimized
+      e.stopPropagation();
+    }
+  };
+
   return (
-    <div className={`floating-player ${isFloatingPlayerVisible ? 'active' : ''}`}>
+    <div 
+      className={`floating-player ${isFloatingPlayerVisible ? 'active' : ''} ${isPlayerMinimized ? 'minimized' : ''}`}
+      onClick={handlePlayerClick}
+    >
       <div className="floating-player-info">
         <div 
           className="floating-thumbnail"
@@ -80,8 +94,8 @@ const FloatingPlayer = () => {
         <button className="player-btn" onClick={handleVolumeClick}>
           <i className={`fas ${volume > 0 ? 'fa-volume-up' : 'fa-volume-mute'}`}></i>
         </button>
-        <button className="player-btn">
-          <i className="fas fa-list"></i>
+        <button className="player-btn minimize-btn" onClick={togglePlayerMinimized}>
+          <i className={`fas ${isPlayerMinimized ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
         </button>
       </div>
     </div>
