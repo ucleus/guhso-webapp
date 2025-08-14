@@ -4,8 +4,14 @@
   margin: 0 auto;
 }
 
-.blog-page h1 {
+.blog-header {
+  text-align: left;
+  border: none;
   margin-bottom: 2rem;
+}
+
+.blog-header h1 {
+  margin: 0;
 }
 
 .blog-grid {
