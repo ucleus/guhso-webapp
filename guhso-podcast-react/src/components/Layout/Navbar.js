@@ -10,6 +10,8 @@ const Navbar = () => {
   const handleBigupClick = () => {
     // Handle registration/donation logic here
     navigate('/donation');
+    // Handle donation/donation logic here
+    window.location.href = '/donation';
   };
 
   const toggleMobileMenu = () => {

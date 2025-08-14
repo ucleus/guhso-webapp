@@ -22,8 +22,8 @@ Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
-// Registration Routes
-Route::get('register', [\App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+// donation Routes
+Route::get('register', [\App\Http\Controllers\Auth\RegisterController::class, 'showdonationForm'])->name('register');
 Route::post('register', [\App\Http\Controllers\Auth\RegisterController::class, 'register']);
 
 Route::get('register', function () {
@@ -31,7 +31,7 @@ Route::get('register', function () {
 })->name('register');
 
 Route::post('register', function (Illuminate\Http\Request $request) {
-    \Log::info('Registration attempt started', ['data' => $request->all()]);
+    \Log::info('donation attempt started', ['data' => $request->all()]);
 
     $validator = Validator::make($request->all(), [
         'name' => ['required', 'string', 'max:255'],
@@ -59,16 +59,16 @@ Route::post('register', function (Illuminate\Http\Request $request) {
         \Illuminate\Support\Facades\Auth::login($user);
         \Log::info('User created and logged in', ['user_id' => $user->id]);
 
-        return redirect('/dashboard')->with('success', 'Registration successful! Welcome to Guhso.');
+        return redirect('/dashboard')->with('success', 'donation successful! Welcome to Guhso.');
     } catch (QueryException $e) {
-        \Log::error('Database error during registration', ['error' => $e->getMessage()]);
+        \Log::error('Database error during donation', ['error' => $e->getMessage()]);
         $message = $e->getCode() === '23000'
             ? 'This email is already registered.'
             : 'A database error occurred. Please try again later.';
         return back()->with('error', $message)->withInput();
     } catch (\Exception $e) {
-        \Log::error('Registration failed', ['error' => $e->getMessage()]);
-        return back()->with('error', 'Registration failed. Please try again.')->withInput();
+        \Log::error('donation failed', ['error' => $e->getMessage()]);
+        return back()->with('error', 'donation failed. Please try again.')->withInput();
     }
 });
 

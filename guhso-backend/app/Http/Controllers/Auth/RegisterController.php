@@ -16,7 +16,7 @@ class RegisterController extends Controller
     | Register Controller
     |--------------------------------------------------------------------------
     |
-    | This controller handles the registration of new users as well as their
+    | This controller handles the donation of new users as well as their
     | validation and creation. By default this controller uses a trait to
     | provide this functionality without requiring any additional code.
     |
@@ -25,7 +25,7 @@ class RegisterController extends Controller
     use RegistersUsers;
 
     /**
-     * Where to redirect users after registration.
+     * Where to redirect users after donation.
      *
      * @var string
      */
@@ -42,17 +42,17 @@ class RegisterController extends Controller
     }
 
     /**
-     * Show the application registration form.
+     * Show the application donation form.
      *
      * @return \Illuminate\View\View
      */
-    public function showRegistrationForm()
+    public function showdonationForm()
     {
         return view('auth.register');
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Get a validator for an incoming donation request.
      *
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
@@ -67,7 +67,7 @@ class RegisterController extends Controller
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Create a new user instance after a valid donation.
      *
      * @param  array  $data
      * @return \App\Models\User
@@ -81,7 +81,7 @@ class RegisterController extends Controller
                 'password' => Hash::make($data['password']),
             ]);
 
-            session()->flash('success', 'Registration successful! Welcome to Guhso.');
+            session()->flash('success', 'donation successful! Welcome to Guhso.');
             return $user;
         } catch (QueryException $e) {
             $message = $e->getCode() === '23000'
@@ -90,7 +90,7 @@ class RegisterController extends Controller
             session()->flash('error', $message);
             throw $e;
         } catch (\Exception $e) {
-            session()->flash('error', 'Registration failed: ' . $e->getMessage());
+            session()->flash('error', 'donation failed: ' . $e->getMessage());
             throw $e;
         }
     }
