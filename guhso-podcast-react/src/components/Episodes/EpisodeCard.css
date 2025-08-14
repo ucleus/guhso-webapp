@@ -244,8 +244,7 @@
 
 /* Hero episode indicator */
 .episode-card.hero {
-    border: 2px solid #ffd700;
-    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+    /* Removed hero border and glow so featured episodes match regular styling */
 }
 
 .episode-card.hero::before {
