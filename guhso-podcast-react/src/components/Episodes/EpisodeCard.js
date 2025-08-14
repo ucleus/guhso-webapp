@@ -60,13 +60,6 @@ const EpisodeCard = ({ episode }) => {
           {episode.episode_number && <span>EP {episode.episode_number}</span>}
           {episode.itunes_duration && <span>• {episode.itunes_duration}</span>}
         </div>
-        {episode.description && (
-          <p className="episode-description">
-            {episode.description.length > 80 
-              ? `${episode.description.substring(0, 80)}...` 
-              : episode.description}
-          </p>
-        )}
         <div className="episode-show">
           {episode.show?.title && <span>{episode.show.title}</span>}
         </div>

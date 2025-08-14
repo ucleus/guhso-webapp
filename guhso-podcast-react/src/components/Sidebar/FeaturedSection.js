@@ -29,7 +29,6 @@ const FeaturedSection = () => {
         <div className="featured-card">
           <div>
             <h3>{activePost.title}</h3>
-            <p>{activePost.body}</p>
           </div>
         </div>
       </div>
