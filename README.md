@@ -22,7 +22,7 @@
 
 - 🎵 **Audio Streaming** - High-quality podcast playback with floating player
 - 📱 **Responsive Design** - Works perfectly on desktop, tablet, and mobile
-- 👤 **User Management** - Registration, authentication, and personalized experiences
+- 👤 **User Management** - donation, authentication, and personalized experiences
 - 📊 **Content Management** - Admin dashboard for managing shows and episodes
 - 🔍 **Search & Discovery** - Find your favorite content easily
 - ❤️ **Favorites System** - Save and organize your preferred episodes

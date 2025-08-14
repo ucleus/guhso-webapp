@@ -1,27 +1,27 @@
 /* src/pages/DonationPage.css */
 
-.registration-page {
+.donation-page {
   min-height: calc(100vh - 70px);
   background: var(--dark-bg);
   color: var(--text-light);
   overflow-x: hidden;
 }
 
-.registration-container {
+.donation-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
 }
 
 /* Section Base Styles */
-.registration-section {
+.donation-section {
   margin-bottom: 4rem;
   opacity: 0;
   transform: translateY(50px);
   transition: all 0.8s ease;
 }
 
-.registration-section.visible {
+.donation-section.visible {
   opacity: 1;
   transform: translateY(0);
 }
@@ -322,7 +322,7 @@
 }
 
 @media (max-width: 768px) {
-  .registration-container {
+  .donation-container {
     padding: 1rem;
   }
 
@@ -395,7 +395,7 @@
     transition-duration: 0.01ms !important;
   }
 
-  .registration-section {
+  .donation-section {
     opacity: 1;
     transform: translateY(0);
   }

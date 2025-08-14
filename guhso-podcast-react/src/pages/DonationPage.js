@@ -28,7 +28,7 @@ const DonationPageContent = () => {
       { threshold: 0.1 }
     );
 
-    const sections = document.querySelectorAll('.registration-section');
+    const sections = document.querySelectorAll('.donation-section');
     sections.forEach(section => observer.observe(section));
 
     return () => observer.disconnect();
@@ -76,16 +76,16 @@ const DonationPageContent = () => {
 
 
   return (
-    <div className="registration-page">
+    <div className="donation-page">
       {/* Donation/Sponsorship Hero Section */}
       <DonationHeroSection />
       
-      <div className="registration-container">
+      <div className="donation-container">
 
         {/* Main Content */}
         <section 
-          id="registration-content" 
-          className={`registration-section content-section ${isVisible['registration-content'] ? 'visible' : ''}`}
+          id="donation-content" 
+          className={`donation-section content-section ${isVisible['donation-content'] ? 'visible' : ''}`}
         >
           <div className="content-text">
             <h2>Why Your Support Matters</h2>
@@ -110,7 +110,7 @@ const DonationPageContent = () => {
         {/* Donation Tiers Section */}
         <section 
           id="donation-tiers" 
-          className={`registration-section donation-tiers-section ${isVisible['donation-tiers'] ? 'visible' : ''}`}
+          className={`donation-section donation-tiers-section ${isVisible['donation-tiers'] ? 'visible' : ''}`}
         >
           <DonationTiers onAddToCart={handleAddToCart} />
         </section>
@@ -118,15 +118,15 @@ const DonationPageContent = () => {
         {/* Donation Cart */}
         <section 
           id="donation-cart" 
-          className={`registration-section cart-section ${isVisible['donation-cart'] ? 'visible' : ''}`}
+          className={`donation-section cart-section ${isVisible['donation-cart'] ? 'visible' : ''}`}
         >
           <DonationCart onCheckout={handleCheckout} />
         </section>
 
         {/* Contact Section */}
         <section 
-          id="registration-contact" 
-          className={`registration-section contact-section ${isVisible['registration-contact'] ? 'visible' : ''}`}
+          id="donation-contact" 
+          className={`donation-section contact-section ${isVisible['donation-contact'] ? 'visible' : ''}`}
         >
           <div className="contact-content">
             <h2>Get in Touch</h2>

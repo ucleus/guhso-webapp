@@ -7,7 +7,7 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleBigupClick = () => {
-    // Handle registration/donation logic here
+    // Handle donation/donation logic here
     window.location.href = '/donation';
   };
 
