@@ -17,6 +17,8 @@
 .featured-slider {
     position: relative;
     overflow: hidden;
+    cursor: grab;
+    user-select: none;
 }
 
 .featured-card {
@@ -25,6 +27,9 @@
     border-radius: 12px;
     padding: 1.25rem;
     transition: all 0.3s ease;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .featured-card:hover {
