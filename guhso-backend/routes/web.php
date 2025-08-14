@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\ShowController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\AdvertisementController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -100,6 +101,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/posts/{post}/edit', [PostController::class, 'edit'])->name('dashboard.posts.edit');
     Route::put('/dashboard/posts/{post}', [PostController::class, 'update'])->name('dashboard.posts.update');
     Route::delete('/dashboard/posts/{post}', [PostController::class, 'destroy'])->name('dashboard.posts.destroy');
+    // Advertisement management routes
+    Route::get('/dashboard/ads', [AdvertisementController::class, 'index'])->name('dashboard.ads');
+    Route::get('/dashboard/ads/create', [AdvertisementController::class, 'create'])->name('dashboard.ads.create');
+    Route::post('/dashboard/ads', [AdvertisementController::class, 'store'])->name('dashboard.ads.store');
+    Route::get('/dashboard/ads/{ad}/edit', [AdvertisementController::class, 'edit'])->name('dashboard.ads.edit');
+    Route::put('/dashboard/ads/{ad}', [AdvertisementController::class, 'update'])->name('dashboard.ads.update');
+    Route::delete('/dashboard/ads/{ad}', [AdvertisementController::class, 'destroy'])->name('dashboard.ads.destroy');
     Route::get('/dashboard/users', [DashboardController::class, 'users'])->name('dashboard.users');
 });
 
