@@ -28,7 +28,7 @@ const Blog = () => {
 
   if (loading) {
     return (
-      <div className="blog-page">
+      <div className=".episodes-header">
         <h1>It Guhso</h1>
         <p>Loading posts...</p>
       </div>
@@ -37,7 +37,7 @@ const Blog = () => {
 
   if (error) {
     return (
-      <div className="blog-page">
+      <div className=".episodes-header">
         <h1>It Guhso</h1>
         <p className="error-message">Failed to load posts: {error}</p>
       </div>
@@ -45,7 +45,7 @@ const Blog = () => {
   }
 
   return (
-    <div className="blog-page">
+    <div className="episodes-header">
       <h1>It Guhso</h1>
       <div className="blog-grid">
         {posts.map(post => (
