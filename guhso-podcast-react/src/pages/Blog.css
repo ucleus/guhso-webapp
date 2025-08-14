@@ -12,16 +12,17 @@
 
 .episodes-header {
   text-align: center;
-.blog-header h1 {
-  margin: 0;
-}
+  .blog-header h1 {
+    margin: 0;
+  }
 
-.blog-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
 
-.error-message {
-  color: var(--error-color, #ff6b6b);
+  .error-message {
+    color: var(--error-color, #ff6b6b);
+  }
 }
