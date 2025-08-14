@@ -1,4 +1,4 @@
-const API_URL = process.env.REACT_APP_API_URL || 'https://kjprocleaning.com/api/v1';
+const API_URL = process.env.REACT_APP_API_URL || 'https://guhso.com/api/v1';
 
 /**
  * Process episode data to normalize thumbnail fields
