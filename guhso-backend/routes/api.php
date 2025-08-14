@@ -7,7 +7,8 @@ use App\Http\Controllers\Api\EpisodeController as ApiEpisodeController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\PostController;
-use App\Http\Controllers\SearchController; 
+use App\Http\Controllers\Api\AdvertisementController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -39,6 +40,9 @@ Route::prefix('v1')->group(function () {
     Route::get('/categories', function() {
         return \App\Models\Category::withCount('shows')->get();
     });
+
+    // Advertisements
+    Route::get('/ads', [AdvertisementController::class, 'active']);
     
     // Authentication endpoints
     Route::post('/register', [AuthController::class, 'register']);
@@ -74,6 +78,7 @@ Route::prefix('v1')->group(function () {
     Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
         Route::apiResource('shows', \App\Http\Controllers\Admin\ShowController::class);
         Route::apiResource('posts', PostController::class);
+        Route::apiResource('ads', AdvertisementController::class);
         Route::get('/dashboard/stats', function() {
             return response()->json([
                 'total_shows' => \App\Models\Show::count(),
