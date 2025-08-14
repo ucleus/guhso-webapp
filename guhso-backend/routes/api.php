@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\AdvertisementController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\MailingListController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -35,7 +36,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/posts/featured', [PostController::class, 'featured']);
     Route::get('/posts/sticky', [PostController::class, 'sticky']);
     Route::get('/posts/{post:slug}', [PostController::class, 'show']);
-    
+
     // Categories for navigation
     Route::get('/categories', function() {
         return \App\Models\Category::withCount('shows')->get();
@@ -43,6 +44,9 @@ Route::prefix('v1')->group(function () {
 
     // Advertisements
     Route::get('/ads', [AdvertisementController::class, 'active']);
+
+    // Mailing list
+    Route::post('/mailing-list', [MailingListController::class, 'store']);
     
     // Authentication endpoints
     Route::post('/register', [AuthController::class, 'register']);
