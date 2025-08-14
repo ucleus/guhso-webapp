@@ -32,6 +32,12 @@ const Blog = () => {
         <div className="episodes-header">
           <h1>It Guhso</h1>
         </div>
+        <div className="blog-header">
+          <h1>It Guhso</h1>
+          <p>Loading posts...</p>
+        </div>
+      <div className="episodes-header">
+        <h1>It Guhso</h1>
         <p>Loading posts...</p>
       </div>
     );
@@ -43,6 +49,12 @@ const Blog = () => {
         <div className="episodes-header">
           <h1>It Guhso</h1>
         </div>
+        <div className="blog-header">
+          <h1>It Guhso</h1>
+          <p className="error-message">Failed to load posts: {error}</p>
+        </div>
+      <div className="episodes-header">
+        <h1>It Guhso</h1>
         <p className="error-message">Failed to load posts: {error}</p>
       </div>
     );
@@ -51,6 +63,7 @@ const Blog = () => {
   return (
     <div className="blog-page">
       <div className="episodes-header">
+      <div className="blog-header">
         <h1>It Guhso</h1>
       </div>
       <div className="blog-grid">
