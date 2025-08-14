@@ -33,6 +33,9 @@ const Blog = () => {
           <h1>It Guhso</h1>
           <p>Loading posts...</p>
         </div>
+      <div className="episodes-header">
+        <h1>It Guhso</h1>
+        <p>Loading posts...</p>
       </div>
     );
   }
@@ -44,6 +47,9 @@ const Blog = () => {
           <h1>It Guhso</h1>
           <p className="error-message">Failed to load posts: {error}</p>
         </div>
+      <div className="episodes-header">
+        <h1>It Guhso</h1>
+        <p className="error-message">Failed to load posts: {error}</p>
       </div>
     );
   }
