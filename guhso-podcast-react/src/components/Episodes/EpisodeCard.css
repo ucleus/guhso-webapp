@@ -242,34 +242,9 @@
 }
 
 
-/* Hero episode indicator */
+/* Hero episode styling (matches regular episodes; no tag) */
 .episode-card.hero {
-    /* Removed hero border and glow so featured episodes match regular styling */
-}
-
-.episode-card.hero::before {
-    content: 'HERO';
-    position: absolute;
-    top: -1px;
-    left: 1rem;
-    background: linear-gradient(45deg, #ffd700, #ffed4e);
-    color: #333;
-    padding: 0.25rem 0.75rem;
-    border-radius: 0 0 12px 12px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    z-index: 3;
-    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
-    animation: heroGlow 2s ease-in-out infinite alternate;
-}
-
-@keyframes heroGlow {
-    0% {
-        box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
-    }
-    100% {
-        box-shadow: 0 4px 16px rgba(255, 215, 0, 0.6);
-    }
+    /* Hero episodes now use the same styling as regular episodes */
 }
 
 /* Premium episode indicator */
