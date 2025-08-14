@@ -1,4 +1,4 @@
-// src/pages/RegistrationPage.js
+// src/pages/DonationPage.js
 import React, { useState, useEffect } from 'react';
 import DonationHeroSection from '../components/Hero/DonationHeroSection';
 import DonationTiers from '../components/Donation/DonationTiers';
@@ -6,10 +6,10 @@ import DonationCart from '../components/Donation/DonationCart';
 import PaymentForm from '../components/Donation/PaymentForm';
 import { DonationCartProvider, useDonationCart } from '../contexts/DonationCartContext';
 import { ToastProvider } from '../contexts/ToastContext';
-import './RegistrationPage.css';
+import './DonationPage.css';
 
 // Main page component with donation functionality
-const RegistrationPageContent = () => {
+const DonationPageContent = () => {
   const [isVisible, setIsVisible] = useState({});
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const { addToCart } = useDonationCart();
@@ -123,26 +123,6 @@ const RegistrationPageContent = () => {
           <DonationCart onCheckout={handleCheckout} />
         </section>
 
-        {/* Call to Action */}
-        <section 
-          id="registration-cta" 
-          className={`registration-section cta-section ${isVisible['registration-cta'] ? 'visible' : ''}`}
-        >
-          <div className="cta-content">
-            <h2>Ready to Show Some Love?</h2>
-            <p>Choose how you want to support the Guhso movement:</p>
-            <div className="cta-buttons">
-              <a href="#" className="cta-btn tertiary">
-                <i className="fas fa-share-alt"></i>
-                <span>Share the Vibes</span>
-              </a>
-            </div>
-            <p className="cta-note">
-              <strong>Big up!</strong> Your support keeps the authentic conversations flowing.
-            </p>
-          </div>
-        </section>
-
         {/* Contact Section */}
         <section 
           id="registration-contact" 
@@ -176,14 +156,14 @@ const RegistrationPageContent = () => {
 };
 
 // Main component wrapped with providers
-const RegistrationPage = () => {
+const DonationPage = () => {
   return (
     <ToastProvider>
       <DonationCartProvider>
-        <RegistrationPageContent />
+        <DonationPageContent />
       </DonationCartProvider>
     </ToastProvider>
   );
 };
 
-export default RegistrationPage;
+export default DonationPage;

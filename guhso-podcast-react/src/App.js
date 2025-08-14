@@ -11,7 +11,7 @@ import EpisodeDetail from './pages/EpisodeDetail';
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
 import AboutPage from './pages/AboutPage';
-import RegistrationPage from './pages/RegistrationPage';
+import DonationPage from './pages/DonationPage';
 import { PlayerProvider } from './contexts/PlayerContext';
 import './App.css';
 
@@ -79,7 +79,7 @@ function App() {
             {/* Registration Page */}
             <Route
               path="/donation"
-              element={<RegistrationPage />}
+              element={<DonationPage />}
             />
             
             {/* Fallback for unknown routes */}
