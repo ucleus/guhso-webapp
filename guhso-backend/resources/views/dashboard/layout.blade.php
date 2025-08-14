@@ -75,6 +75,10 @@
                             <i class="fas fa-users nav-icon" style="margin-right: 16px;"></i>
                             <span>Users</span>
                         </a>
+                        <a href="{{ route('dashboard.mailing-list') }}" class="nav-link {{ request()->routeIs('dashboard.mailing-list*') ? 'active' : '' }}">
+                            <i class="fas fa-envelope nav-icon" style="margin-right: 16px;"></i>
+                            <span>Mailing List</span>
+                        </a>
                     </div>
                     
                     <!-- Separator -->

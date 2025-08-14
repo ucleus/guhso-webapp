@@ -6,6 +6,7 @@ import HeroSection from './components/Hero/HeroSection';
 import TwoColumnSection from './components/Layout/TwoColumnSection';
 import Sidebar from './components/Sidebar/Sidebar';
 import FloatingPlayer from './components/Player/FloatingPlayer';
+import MailingListModal from './components/MailingList/MailingListModal';
 import Episodes from './pages/Episodes';
 import EpisodeDetail from './pages/EpisodeDetail';
 import Blog from './pages/Blog';
@@ -23,10 +24,11 @@ const HomePage = () => {
     <div className="main-container">
       <div className="left-section">
         <HeroSection onEpisodeLoad={setCurrentEpisode} />
-        
+
         <TwoColumnSection currentEpisode={currentEpisode} />
       </div>
       <Sidebar />
+      <MailingListModal />
     </div>
   );
 };
