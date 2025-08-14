@@ -1,14 +1,15 @@
 // src/components/Layout/Navbar.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleBigupClick = () => {
     // Handle registration/donation logic here
-    window.location.href = '/donation';
+    navigate('/donation');
   };
 
   const toggleMobileMenu = () => {
