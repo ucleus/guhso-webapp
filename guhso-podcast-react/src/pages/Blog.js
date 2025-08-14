@@ -28,8 +28,10 @@ const Blog = () => {
 
   if (loading) {
     return (
-      <div className=".episodes-header">
-        <h1>It Guhso</h1>
+      <div className="blog-page">
+        <div className="episodes-header">
+          <h1>It Guhso</h1>
+        </div>
         <p>Loading posts...</p>
       </div>
     );
@@ -37,16 +39,20 @@ const Blog = () => {
 
   if (error) {
     return (
-      <div className=".episodes-header">
-        <h1>It Guhso</h1>
+      <div className="blog-page">
+        <div className="episodes-header">
+          <h1>It Guhso</h1>
+        </div>
         <p className="error-message">Failed to load posts: {error}</p>
       </div>
     );
   }
 
   return (
-    <div className="episodes-header">
-      <h1>It Guhso</h1>
+    <div className="blog-page">
+      <div className="episodes-header">
+        <h1>It Guhso</h1>
+      </div>
       <div className="blog-grid">
         {posts.map(post => (
           <PostCard key={post.id} post={post} />

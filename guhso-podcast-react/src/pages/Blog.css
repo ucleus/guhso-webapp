@@ -8,6 +8,10 @@
   margin-bottom: 2rem;
 }
 
+.episodes-header {
+  text-align: center;
+}
+
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
