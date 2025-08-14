@@ -67,6 +67,10 @@
                             <i class="fas fa-blog nav-icon" style="margin-right: 16px;"></i>
                             <span>Posts</span>
                         </a>
+                        <a href="{{ route('dashboard.ads') }}" class="nav-link {{ request()->routeIs('dashboard.ads*') ? 'active' : '' }}">
+                            <i class="fas fa-bullhorn nav-icon" style="margin-right: 16px;"></i>
+                            <span>Advertisements</span>
+                        </a>
                         <a href="{{ route('dashboard.users') }}" class="nav-link {{ request()->routeIs('dashboard.users') ? 'active' : '' }}">
                             <i class="fas fa-users nav-icon" style="margin-right: 16px;"></i>
                             <span>Users</span>
