@@ -12,16 +12,20 @@
 }
 
 .nav-logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary-color);
     flex-shrink: 0;
     text-decoration: none;
-    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
 }
 
 .nav-logo:hover {
-    color: var(--secondary-color);
+    opacity: 0.85;
+}
+
+.responsive-logo {
+    max-width: 150px;
+    width: 100%;
+    height: auto;
 }
 
 .nav-links {
@@ -97,13 +101,13 @@
         padding: 0.75rem 1rem;
         position: relative;
     }
-    
-    .nav-logo {
-        font-size: 1.25rem;
-    }
-    
+
     .mobile-menu-toggle {
         display: block;
+    }
+
+    .responsive-logo {
+        max-width: 120px;
     }
     
     .nav-links {
@@ -155,11 +159,11 @@
     .navbar {
         padding: 0.5rem 0.75rem;
     }
-    
-    .nav-logo {
-        font-size: 1.1rem;
+
+    .responsive-logo {
+        max-width: 100px;
     }
-    
+
     .bigup-btn {
         padding: 0.35rem 0.8rem;
         font-size: 0.8rem;
@@ -170,10 +174,6 @@
 @media (max-width: 768px) and (orientation: landscape) {
     .navbar {
         padding: 0.5rem 1rem;
-    }
-    
-    .nav-logo {
-        font-size: 1.1rem;
     }
     
     .nav-links {
