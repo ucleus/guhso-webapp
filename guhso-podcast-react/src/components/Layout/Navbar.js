@@ -33,7 +33,9 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <Link to="/" className="nav-logo">GUHSO</Link>
+      <Link to="/" className="nav-logo">
+        <img src="/logo192.png" alt="Guhso logo" className="responsive-logo" />
+      </Link>
       
       <button 
         className="mobile-menu-toggle" 
