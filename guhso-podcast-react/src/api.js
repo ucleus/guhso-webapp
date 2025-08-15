@@ -1,4 +1,12 @@
-const API_URL = process.env.REACT_APP_API_URL || 'https://guhso.com/api/v1';
+// Determine API base URL.
+// Use explicit environment variable when provided. Otherwise,
+// fall back to the current origin so development and production
+// builds hit the same host the app is served from.
+const API_URL =
+  process.env.REACT_APP_API_URL ||
+  (typeof window !== 'undefined'
+    ? `${window.location.origin.replace(/\/$/, '')}/api/v1`
+    : '/api/v1');
 
 /**
  * Process episode data to normalize thumbnail fields
