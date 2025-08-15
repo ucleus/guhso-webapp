@@ -135,7 +135,7 @@ sharp -i original.jpg -o episode-1-large.jpg --width 800 --height 600 --quality 
 
 Create `.env.production` in your local project:
 ```env
-REACT_APP_API_URL=https://guhso.com/api/v1
+REACT_APP_API_URL=https://kjprocleaning.com/api/v1
 REACT_APP_CDN_URL=https://guhso.com
 ```
 
@@ -182,7 +182,7 @@ curl -I https://guhso.com/images/thumbnails/default.jpg
 curl -I https://guhso.com/episodes
 
 # Test API endpoints (if applicable)
-curl -I https://guhso.com/api/v1/episodes
+curl -I https://kjprocleaning.com/api/v1/episodes
 ```
 
 ### Browser Testing:

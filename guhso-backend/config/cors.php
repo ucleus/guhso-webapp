@@ -21,8 +21,10 @@ return [
 
     // 'allowed_origins' => ['*'],
     'allowed_origins' => [
-    'http://localhost:3000',    // Your React app
-    'http://127.0.0.1:3000',
+        'http://localhost:3000',    // Local React app
+        'http://127.0.0.1:3000',
+        'https://guhso.com',       // Production frontend
+        'https://www.guhso.com',
     ],
 
     'allowed_origins_patterns' => [],
