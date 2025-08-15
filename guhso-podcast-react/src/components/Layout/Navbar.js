@@ -34,7 +34,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <Link to="/" className="nav-logo">
-        <img src="/logo192.png" alt="Guhso logo" className="responsive-logo" />
+        <img src="/logo.png" alt="Guhso logo" className="responsive-logo" />
       </Link>
       
       <button 
