@@ -1,4 +1,5 @@
 // src/services/squarePayment.js
+import { API_URL } from '../api';
 
 class SquarePaymentService {
   constructor() {
@@ -84,7 +85,7 @@ class SquarePaymentService {
         const token = tokenResult.token;
         
         // Send payment data to your backend
-        const response = await fetch('/api/v1/donations/process-payment', {
+        const response = await fetch(`${API_URL}/donations/process-payment`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -132,7 +133,7 @@ class SquarePaymentService {
         const token = tokenResult.token;
         
         // Send subscription data to your backend
-        const response = await fetch('/api/v1/donations/create-subscription', {
+        const response = await fetch(`${API_URL}/donations/create-subscription`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

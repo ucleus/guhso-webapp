@@ -1,9 +1,10 @@
 // src/services/emailService.js
 import { generateDonationConfirmationEmail, generatePlainTextConfirmation } from '../templates/donationConfirmationEmail';
+import { API_URL } from '../api';
 
 class EmailService {
   constructor() {
-    this.apiUrl = process.env.REACT_APP_API_URL || 'https://guhso.com/api/v1';
+    this.apiUrl = API_URL;
   }
 
   /**
