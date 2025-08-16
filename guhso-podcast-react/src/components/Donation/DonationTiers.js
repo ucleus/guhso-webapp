@@ -215,7 +215,7 @@ const DonationTiers = ({ onAddToCart }) => {
   };
 
   return (
-    <div className="donation-section">
+    <div className="donation-tiers-container">
       <div className="donation-header">
         <h2 className="donation-title">Keep Di Vibes Alive</h2>
         <p className="donation-subtitle">Every mickle mek a muckle - Support GUHSO</p>

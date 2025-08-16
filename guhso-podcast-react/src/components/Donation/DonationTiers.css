@@ -1,6 +1,6 @@
 /* src/components/Donation/DonationTiers.css */
 
-.donation-section {
+.donation-tiers-container {
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   padding: 60px 20px;
   border-radius: 20px;
@@ -9,7 +9,7 @@
   overflow: hidden;
 }
 
-.donation-section::before {
+.donation-tiers-container::before {
   content: '';
   position: absolute;
   top: 0;
@@ -343,7 +343,7 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .donation-section {
+  .donation-tiers-container {
     padding: 40px 15px;
     margin: 20px 0;
   }
