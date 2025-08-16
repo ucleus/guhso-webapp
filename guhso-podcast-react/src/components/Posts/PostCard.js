@@ -28,6 +28,10 @@ const PostCard = ({ post }) => {
       <div className="post-card-content">
         <h3 className="post-card-title">{post.title}</h3>
         {description && <p className="post-card-description">{description}</p>}
+        <div className="post-card-read-btn">
+          <span>Read</span>
+          <i className="fas fa-arrow-right"></i>
+        </div>
       </div>
     </Link>
   );
