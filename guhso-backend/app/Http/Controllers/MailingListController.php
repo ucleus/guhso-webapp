@@ -20,7 +20,7 @@ class MailingListController extends Controller
     {
         $data = $request->validate([
             'first_name' => 'required|string|max:100',
-            'email' => 'required|email|unique:MailingList,email',
+            'email' => 'required|email|unique:mailing_lists,email',
         ]);
 
         MailingList::create($data);
