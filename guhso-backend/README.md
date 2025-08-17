@@ -75,3 +75,11 @@ When creating or updating posts through the API, the `tags` field accepts either
 - A single comma-separated string: `{"tags": "laravel, php"}`
 
 Comma-separated strings are automatically converted into arrays by the API.
+
+## Database Setup
+
+Run the database migrations to create all required tables, including the mailing list:
+
+```bash
+php artisan migrate
+```

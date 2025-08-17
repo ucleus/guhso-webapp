@@ -88,13 +88,13 @@ export async function fetchPostBySlug(slug) {
 }
 
 // Mailing list subscription
-export async function subscribeToMailingList(firstName, email) {
+export async function subscribeToMailingList(first_name, email) {
   const res = await fetch(`${API_URL}/mailing-list`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ first_name: firstName, email })
+    body: JSON.stringify({ first_name, email })
   });
   if (!res.ok) {
     throw new Error(`Failed to subscribe: ${res.status}`);
