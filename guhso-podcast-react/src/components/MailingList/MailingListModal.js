@@ -30,6 +30,9 @@ const MailingListModal = () => {
       setStatus('Thank you for joining the team!');
       setForm({ first_name: '', email: '' });
     } catch (err) {
+      // Surface the error in the console for easier debugging while
+      // keeping the user-facing message generic.
+      console.error('Mailing list subscription failed:', err);
       setStatus('Subscription failed. Please try again.');
     }
   };

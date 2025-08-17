@@ -2,8 +2,14 @@
 // Prefer an explicit environment variable. If none is provided,
 // default to the production API hosted at kjprocleaning.com so the
 // public site served from guhso.com can reach the backend.
-export const API_URL =
-  process.env.REACT_APP_API_URL || 'https://kjprocleaning.com/api/v1';
+//
+// Some environments may supply a base URL without the `/v1` path
+// segment. To avoid 404s from missing the version prefix, normalize
+// the base so `API_URL` always includes `/v1` exactly once.
+const API_BASE =
+  process.env.REACT_APP_API_URL || 'https://kjprocleaning.com/api';
+
+export const API_URL = API_BASE.endsWith('/v1') ? API_BASE : `${API_BASE}/v1`;
 
 /**
  * Process episode data to normalize thumbnail fields
