@@ -5,7 +5,7 @@ import { subscribeToMailingList } from '../../api';
 const MailingListModal = () => {
   const [show, setShow] = useState(false);
   const [hasShown, setHasShown] = useState(false);
-  const [form, setForm] = useState({ firstName: '', email: '' });
+  const [form, setForm] = useState({ first_name: '', email: '' });
   const [status, setStatus] = useState('');
 
   useEffect(() => {
@@ -26,10 +26,13 @@ const MailingListModal = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await subscribeToMailingList(form.firstName, form.email);
+      await subscribeToMailingList(form.first_name, form.email);
       setStatus('Thank you for joining the team!');
-      setForm({ firstName: '', email: '' });
+      setForm({ first_name: '', email: '' });
     } catch (err) {
+      // Surface the error in the console for easier debugging while
+      // keeping the user-facing message generic.
+      console.error('Mailing list subscription failed:', err);
       setStatus('Subscription failed. Please try again.');
     }
   };
@@ -45,9 +48,9 @@ const MailingListModal = () => {
         <form onSubmit={handleSubmit} className="ml-form">
           <input
             type="text"
-            name="firstName"
+            name="first_name"
             placeholder="First Name"
-            value={form.firstName}
+            value={form.first_name}
             onChange={handleChange}
             required
           />
