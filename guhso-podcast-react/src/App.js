@@ -7,6 +7,7 @@ import TwoColumnSection from './components/Layout/TwoColumnSection';
 import Sidebar from './components/Sidebar/Sidebar';
 import FloatingPlayer from './components/Player/FloatingPlayer';
 import MailingListModal from './components/MailingList/MailingListModal';
+import CookieConsent from './components/CookieConsent/CookieConsent';
 import Episodes from './pages/Episodes';
 import EpisodeDetail from './pages/EpisodeDetail';
 import Blog from './pages/Blog';
@@ -111,6 +112,7 @@ function App() {
           </Routes>
           
           <FloatingPlayer />
+          <CookieConsent />
         </div>
       </Router>
     </PlayerProvider>
