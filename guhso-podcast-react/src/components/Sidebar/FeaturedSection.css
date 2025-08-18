@@ -1,163 +1,197 @@
 /* src/components/Sidebar/FeaturedSection.css */
 
 .featured-section {
-    background: var(--light-bg);
-    border-radius: 16px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: var(--light-bg);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .featured-section:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
 .featured-slider {
-    position: relative;
-    overflow: hidden;
-    cursor: grab;
-    user-select: none;
+  position: relative;
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
 }
 
 .featured-card {
-    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(247, 147, 30, 0.1));
-    border: 1px solid rgba(255, 107, 53, 0.2);
-    border-radius: 12px;
-    padding: 1.25rem;
-    transition: all 0.3s ease;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 53, 0.1),
+    rgba(247, 147, 30, 0.1)
+  );
+  border: 1px solid rgba(255, 107, 53, 0.2);
+  border-radius: 12px;
+  padding: 1.25rem;
+  transition: all 0.3s ease;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 350px;
 }
 
 .featured-card:hover {
-    background: linear-gradient(135deg, rgba(255, 107, 53, 0.15), rgba(247, 147, 30, 0.15));
-    border-color: rgba(255, 107, 53, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 53, 0.15),
+    rgba(247, 147, 30, 0.15)
+  );
+  border-color: rgba(255, 107, 53, 0.3);
+}
+
+.featured-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #fff;
+  padding: 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1;
+  transition: background 0.3s ease;
+}
+
+.featured-arrow:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.featured-arrow.left {
+  left: 0.5rem;
+}
+
+.featured-arrow.right {
+  right: 0.5rem;
 }
 
 .featured-card h3 {
-    color: var(--text-light);
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-    line-height: 1.3;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  color: var(--text-light);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .featured-nav {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .featured-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
 .featured-dot:hover {
-    background: rgba(255, 107, 53, 0.6);
-    transform: scale(1.2);
+  background: rgba(255, 107, 53, 0.6);
+  transform: scale(1.2);
 }
 
 .featured-dot.active {
-    background: var(--primary-color);
-    transform: scale(1.3);
-    box-shadow: 0 0 8px rgba(255, 107, 53, 0.5);
+  background: var(--primary-color);
+  transform: scale(1.3);
+  box-shadow: 0 0 8px rgba(255, 107, 53, 0.5);
 }
 
 .featured-dot.active::after {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
-    border: 1px solid rgba(255, 107, 53, 0.3);
-    border-radius: 50%;
-    animation: pulse-dot 2s infinite;
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border: 1px solid rgba(255, 107, 53, 0.3);
+  border-radius: 50%;
+  animation: pulse-dot 2s infinite;
 }
 
 @keyframes pulse-dot {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1.8);
-        opacity: 0;
-    }
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
 }
 
 /* Loading state */
 .featured-section.loading {
-    animation: shimmer 1.5s ease-in-out infinite alternate;
+  animation: shimmer 1.5s ease-in-out infinite alternate;
 }
 
 .featured-section.loading .featured-card {
-    background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .featured-section.loading h3 {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    color: transparent;
-    height: 1.2rem;
-    margin-bottom: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: transparent;
+  height: 1.2rem;
+  margin-bottom: 0.75rem;
 }
 
 @keyframes shimmer {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0.7;
-    }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.7;
+  }
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
-    .featured-section {
-        padding: 1rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .featured-card {
-        padding: 1rem;
-    }
-    
-    .featured-card h3 {
-        font-size: 1rem;
-    }
-    
+  .featured-section {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .featured-card {
+    padding: 1rem;
+  }
+
+  .featured-card h3 {
+    font-size: 1rem;
+  }
 }
 
 /* Dark theme support */
 @media (prefers-color-scheme: light) {
-    .featured-section {
-        background: #ffffff;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-    
-    .featured-card h3 {
-        color: #1f2937;
-    }
-    
-    .featured-nav {
-        border-top-color: rgba(0, 0, 0, 0.1);
-    }
+  .featured-section {
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .featured-card h3 {
+    color: #1f2937;
+  }
+
+  .featured-nav {
+    border-top-color: rgba(0, 0, 0, 0.1);
+  }
 }
