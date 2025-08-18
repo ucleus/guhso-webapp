@@ -135,8 +135,8 @@
             color: #f2f2f2 !important;
         }
         .nav-link.active {
-            @apply bg-blue-600 shadow-lg;
-            color: white !important;
+            @apply shadow-lg;
+            color: #FF6B35 !important;
         }
         .nav-link:hover {
             @apply transform translate-x-1;
@@ -151,7 +151,13 @@
             color: white !important;
         }
         .nav-link.active .nav-icon {
-            color: white !important;
+            color: #FF6B35 !important;
+        }
+        .nav-link.active:hover {
+            color: #FF6B35 !important;
+        }
+        .nav-link.active:hover .nav-icon {
+            color: #FF6B35 !important;
         }
         
         /* Force vertical stacking */
@@ -175,7 +181,7 @@
             top: 0;
             bottom: 0;
             width: 3px;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
             border-radius: 0 2px 2px 0;
             transform: scaleY(0);
             transition: transform 0.2s ease-in-out;
