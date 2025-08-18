@@ -1,0 +1,127 @@
+.cookie-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background: var(--light-bg);
+  color: var(--text-light);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
+  z-index: 1100;
+}
+
+.cookie-text {
+  flex: 1;
+}
+
+.cookie-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cookie-bar .btn {
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cookie-bar .btn.primary {
+  background: var(--primary-color);
+  color: var(--text-light);
+}
+
+.cookie-bar .btn.secondary {
+  background: transparent;
+  color: var(--text-light);
+  border: 1px solid var(--text-light);
+}
+
+.cookie-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1101;
+}
+
+.cookie-modal {
+  background: var(--dark-bg);
+  color: var(--text-light);
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  width: 90%;
+  max-width: 400px;
+}
+
+.cookie-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem 0;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--text-muted);
+  transition: 0.4s;
+  border-radius: 20px;
+}
+
+.slider:before {
+  position: absolute;
+  content: '';
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background: var(--primary-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+.cookie-modal .btn {
+  margin-top: 1rem;
+  width: 100%;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  background: var(--primary-color);
+  color: var(--text-light);
+  cursor: pointer;
+}
