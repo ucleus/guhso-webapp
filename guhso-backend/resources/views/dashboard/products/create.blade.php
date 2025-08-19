@@ -34,7 +34,7 @@
     </div>
 @endif
 
-<form method="POST" action="{{ route('dashboard.products.store') }}" class="space-y-8">
+<form method="POST" action="{{ route('dashboard.products.store') }}" enctype="multipart/form-data" class="space-y-8">
     @csrf
     
     <!-- Basic Information -->
@@ -176,6 +176,29 @@
         </div>
     </div>
 
+    <!-- Product Images -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-gray-900 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                Product Images
+            </h2>
+            <button type="button" id="addImageBtn" class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
+                Add Image
+            </button>
+        </div>
+        
+        <div id="imagesContainer" class="space-y-4">
+            <!-- Images will be added here -->
+        </div>
+        
+        @error('images')
+            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+        @enderror
+    </div>
+
     <!-- Settings -->
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
@@ -244,6 +267,147 @@ document.addEventListener('DOMContentLoaded', function() {
     const colors = @json($colors);
     const sizes = @json($sizes);
     
+    // Image handling
+    const addImageBtn = document.getElementById('addImageBtn');
+    const imagesContainer = document.getElementById('imagesContainer');
+    let imageIndex = 0;
+    
+    function createImageHTML(index) {
+        return `
+            <div class="image-item border border-gray-200 rounded-lg p-4 bg-gray-50" data-index="${index}">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-medium text-gray-900">Image ${index + 1}</h3>
+                    <button type="button" class="remove-image text-red-600 hover:text-red-800 text-sm">Remove</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Image File *</label>
+                        <div class="drop-zone mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-gray-400 transition-colors duration-200" data-index="${index}">
+                            <div class="space-y-1 text-center">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <div class="flex text-sm text-gray-600">
+                                    <label for="images_${index}" class="relative cursor-pointer bg-white rounded-md font-medium text-pink-600 hover:text-pink-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-pink-500">
+                                        <span>Upload a file</span>
+                                        <input id="images_${index}" name="images[${index}][file]" type="file" class="sr-only" accept="image/*" required>
+                                    </label>
+                                    <p class="pl-1">or drag and drop</p>
+                                </div>
+                                <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                            </div>
+                        </div>
+                        <div class="image-preview-${index} mt-2 hidden"></div>
+                    </div>
+                    <div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Alt Text</label>
+                            <input type="text" name="images[${index}][alt_text]" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Describe the image">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Sort Order</label>
+                            <input type="number" name="images[${index}][sort_order]" value="${index}" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <p class="text-xs text-gray-500 mt-1">Lower numbers appear first</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Add image
+    addImageBtn.addEventListener('click', function() {
+        const imageHTML = createImageHTML(imageIndex);
+        imagesContainer.insertAdjacentHTML('beforeend', imageHTML);
+        setupImagePreview(imageIndex);
+        imageIndex++;
+    });
+    
+    // Remove image
+    imagesContainer.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-image')) {
+            e.target.closest('.image-item').remove();
+        }
+    });
+    
+    // Setup image preview
+    function setupImagePreview(index) {
+        const imageInput = document.getElementById(`images_${index}`);
+        const previewContainer = document.querySelector(`.image-preview-${index}`);
+        const dropZone = document.querySelector(`.drop-zone[data-index="${index}"]`);
+        
+        // Handle file input change
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                displayImagePreview(file, previewContainer, index);
+            }
+        });
+        
+        // Handle drag and drop
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.add('border-pink-500', 'bg-pink-50');
+            }, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.remove('border-pink-500', 'bg-pink-50');
+            }, false);
+        });
+        
+        dropZone.addEventListener('drop', function(e) {
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type.startsWith('image/')) {
+                    // Create a new FileList and assign it to the input
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    imageInput.files = dataTransfer.files;
+                    
+                    displayImagePreview(file, previewContainer, index);
+                }
+            }
+        });
+        
+        function displayImagePreview(file, container, idx) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                container.innerHTML = `
+                    <div class="relative">
+                        <img src="${e.target.result}" alt="Preview" class="h-32 w-full object-cover rounded-lg border border-gray-200">
+                        <button type="button" onclick="removeImagePreview(${idx})" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">×</button>
+                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs p-1 rounded-b-lg">
+                            ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)
+                        </div>
+                    </div>
+                `;
+                container.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+    
+    // Remove image preview
+    window.removeImagePreview = function(index) {
+        const imageInput = document.getElementById(`images_${index}`);
+        const previewContainer = document.querySelector(`.image-preview-${index}`);
+        imageInput.value = '';
+        previewContainer.classList.add('hidden');
+        previewContainer.innerHTML = '';
+    };
+    
     // Create variant HTML
     function createVariantHTML(index) {
         return `
@@ -306,6 +470,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add initial variant
     addVariantBtn.click();
+    
+    // Form submission cleanup
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(e) {
+        // Remove empty image entries before submission
+        const imageItems = document.querySelectorAll('.image-item');
+        imageItems.forEach(item => {
+            const index = item.dataset.index;
+            const fileInput = document.getElementById(`images_${index}`);
+            if (!fileInput.files || fileInput.files.length === 0) {
+                // Remove empty image item
+                item.remove();
+            }
+        });
+    });
 });
 </script>
 @endsection

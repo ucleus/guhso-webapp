@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\ProductImage;
 use App\Models\Color;
 use App\Models\Size;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('variants.color', 'variants.size')->get();
+        $products = Product::with('variants.color', 'variants.size', 'images')->get();
         $totalProducts = $products->count();
         $outOfStock = $products->filter(fn($p) => $p->variants->sum('stock_qty') <= 0)->count();
 
@@ -45,6 +46,10 @@ class ProductController extends Controller
             'variants.*.sku' => 'required|string|max:255|unique:product_variants,sku',
             'variants.*.price' => 'nullable|numeric',
             'variants.*.stock_qty' => 'required|integer|min:0',
+            'images' => 'nullable|array',
+            'images.*.file' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+            'images.*.alt_text' => 'nullable|string|max:255',
+            'images.*.sort_order' => 'nullable|integer|min:0',
         ]);
 
         $data['slug'] = $data['slug'] ?? Str::slug($data['name']);
@@ -71,6 +76,31 @@ class ProductController extends Controller
                 'price' => $variantData['price'] ?? null,
                 'stock_qty' => $variantData['stock_qty'],
             ]);
+        }
+
+        // Handle image uploads
+        if (isset($data['images']) && is_array($data['images'])) {
+            foreach ($data['images'] as $imageData) {
+                // Only process if there's actually a file uploaded
+                if (isset($imageData['file']) && $imageData['file'] instanceof \Illuminate\Http\UploadedFile) {
+                    $file = $imageData['file'];
+                    $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                    $path = $file->storeAs('products', $filename, 'public');
+                    
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'alt_text' => $imageData['alt_text'] ?? null,
+                        'sort_order' => $imageData['sort_order'] ?? 0,
+                        'storage_key' => $path,
+                        'cdn_url_original' => '/storage/' . $path,
+                        // For now, using the same URL for all sizes - could be enhanced with image resizing
+                        'cdn_url_lg' => '/storage/' . $path,
+                        'cdn_url_md' => '/storage/' . $path,
+                        'cdn_url_sm' => '/storage/' . $path,
+                        'cdn_url_thumb' => '/storage/' . $path,
+                    ]);
+                }
+            }
         }
 
         return redirect()->route('dashboard.products')->with('status', 'Product created successfully.');
