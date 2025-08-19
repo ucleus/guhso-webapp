@@ -113,6 +113,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/products', [ProductController::class, 'index'])->name('dashboard.products');
     Route::get('/dashboard/products/create', [ProductController::class, 'create'])->name('dashboard.products.create');
     Route::post('/dashboard/products', [ProductController::class, 'store'])->name('dashboard.products.store');
+    Route::get('/dashboard/products/{product}/edit', [ProductController::class, 'edit'])->name('dashboard.products.edit');
+    Route::put('/dashboard/products/{product}', [ProductController::class, 'update'])->name('dashboard.products.update');
+    Route::delete('/dashboard/products/{product}', [ProductController::class, 'destroy'])->name('dashboard.products.destroy');
     Route::get('/dashboard/users', [DashboardController::class, 'users'])->name('dashboard.users');
     Route::get('/dashboard/mailing-list', [MailingListController::class, 'index'])->name('dashboard.mailing-list');
     Route::post('/dashboard/mailing-list/send', [MailingListController::class, 'send'])->name('dashboard.mailing-list.send');
