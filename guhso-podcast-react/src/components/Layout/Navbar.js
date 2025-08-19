@@ -8,10 +8,8 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const handleBigupClick = () => {
-    // Handle registration/donation logic here
+    // Navigate to the donation page
     navigate('/donation');
-    // Handle donation/donation logic here
-    window.location.href = '/donation';
   };
 
   const toggleMobileMenu = () => {
