@@ -28,6 +28,14 @@ const FeaturedSection = () => {
     );
   };
 
+  useEffect(() => {
+    if (!featuredItems.length) return;
+    const interval = setInterval(() => {
+      setActiveDot((prev) => (prev + 1) % featuredItems.length);
+    }, 25000);
+    return () => clearInterval(interval);
+  }, [featuredItems.length]);
+
   if (!featuredItems.length) {
     return null;
   }
@@ -67,14 +75,6 @@ const FeaturedSection = () => {
     }
     startXRef.current = null;
   };
-
-  useEffect(() => {
-    if (!featuredItems.length) return;
-    const interval = setInterval(() => {
-      setActiveDot((prev) => (prev + 1) % featuredItems.length);
-    }, 25000);
-    return () => clearInterval(interval);
-  }, [featuredItems.length]);
 
   const imageUrl =
     activePost.thumbnail_url ||
