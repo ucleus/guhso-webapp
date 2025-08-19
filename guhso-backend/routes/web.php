@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\AdvertisementController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\MailingListController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -109,6 +110,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/ads/{ad}/edit', [AdvertisementController::class, 'edit'])->name('dashboard.ads.edit');
     Route::put('/dashboard/ads/{ad}', [AdvertisementController::class, 'update'])->name('dashboard.ads.update');
     Route::delete('/dashboard/ads/{ad}', [AdvertisementController::class, 'destroy'])->name('dashboard.ads.destroy');
+    Route::get('/dashboard/products', [ProductController::class, 'index'])->name('dashboard.products');
+    Route::get('/dashboard/products/create', [ProductController::class, 'create'])->name('dashboard.products.create');
+    Route::post('/dashboard/products', [ProductController::class, 'store'])->name('dashboard.products.store');
     Route::get('/dashboard/users', [DashboardController::class, 'users'])->name('dashboard.users');
     Route::get('/dashboard/mailing-list', [MailingListController::class, 'index'])->name('dashboard.mailing-list');
     Route::post('/dashboard/mailing-list/send', [MailingListController::class, 'send'])->name('dashboard.mailing-list.send');
