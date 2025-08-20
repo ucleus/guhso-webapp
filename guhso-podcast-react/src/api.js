@@ -93,6 +93,23 @@ export async function fetchPostBySlug(slug) {
   return res.json();
 }
 
+// Products API
+export async function fetchProducts() {
+  const res = await fetch(`${API_URL}/products`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch products: ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function fetchProductBySlug(slug) {
+  const res = await fetch(`${API_URL}/products/${slug}`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch product: ${res.status}`);
+  }
+  return res.json();
+}
+
 // Mailing list subscription
 export async function subscribeToMailingList(first_name, email) {
   const res = await fetch(`${API_URL}/mailing-list`, {

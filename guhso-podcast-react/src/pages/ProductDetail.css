@@ -1,0 +1,28 @@
+.product-detail {
+  padding: 2rem;
+}
+
+.product-detail {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-image {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.detail-info .price {
+  color: var(--primary-color, #c33);
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.add-cart-btn {
+  padding: 0.5rem 1rem;
+  background: var(--primary-color, #c33);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
