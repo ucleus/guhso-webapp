@@ -15,7 +15,11 @@ import BlogDetail from './pages/BlogDetail';
 import AboutPage from './pages/AboutPage';
 import DonationPage from './pages/DonationPage';
 import TechPage from './pages/TechPage';
+import Merch from './pages/Merch';
+import ProductDetail from './pages/ProductDetail';
+import CartPage from './pages/CartPage';
 import { PlayerProvider } from './contexts/PlayerContext';
+import { CartProvider } from './contexts/CartContext';
 import './App.css';
 
 // Home Page Component
@@ -39,11 +43,12 @@ function App() {
 
   return (
     <PlayerProvider>
-      <Router>
-        <div className="App">
-          <Navbar />
-          
-          <Routes>
+      <CartProvider>
+        <Router>
+          <div className="App">
+            <Navbar />
+
+            <Routes>
             {/* Home Page */}
             <Route 
               path="/" 
@@ -91,6 +96,24 @@ function App() {
               path="/tech"
               element={<TechPage />}
             />
+
+            {/* Merch Page */}
+            <Route
+              path="/merch"
+              element={<Merch />}
+            />
+
+            {/* Product Detail Page */}
+            <Route
+              path="/merch/:slug"
+              element={<ProductDetail />}
+            />
+
+            {/* Cart Page */}
+            <Route
+              path="/cart"
+              element={<CartPage />}
+            />
             
             {/* Fallback for unknown routes */}
             <Route 
@@ -122,6 +145,7 @@ function App() {
           <CookieConsent />
         </div>
       </Router>
+      </CartProvider>
     </PlayerProvider>
   );
 }

@@ -1,0 +1,28 @@
+.cart-page {
+  padding: 2rem;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cart-item .name {
+  flex: 1;
+}
+
+.cart-item input {
+  width: 60px;
+}
+
+.cart-total {
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.clear-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+}

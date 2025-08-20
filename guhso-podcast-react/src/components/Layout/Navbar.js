@@ -2,10 +2,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
+import { useCart } from '../../contexts/CartContext';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { getItemCount } = useCart();
 
   const handleBigupClick = () => {
     // Navigate to the donation page
@@ -24,7 +26,8 @@ const Navbar = () => {
     { href: '/episodes', label: 'Episodes' },
     { href: '/blog', label: 'It Guhso' },
     { href: '/tech', label: 'Tech' },
-    { href: '#merch', label: 'Merch'},
+    { href: '/merch', label: 'Merch' },
+    { href: '/cart', label: `Cart (${getItemCount()})` },
     { href: '#advertise', label: 'Advertise' },
     { href: '/about', label: 'What Is Guhso'}
   ];
