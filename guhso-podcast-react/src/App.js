@@ -14,6 +14,7 @@ import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
 import AboutPage from './pages/AboutPage';
 import DonationPage from './pages/DonationPage';
+import TechPage from './pages/TechPage';
 import { PlayerProvider } from './contexts/PlayerContext';
 import './App.css';
 
@@ -83,6 +84,12 @@ function App() {
             <Route
               path="/donation"
               element={<DonationPage />}
+            />
+
+            {/* Tech Page */}
+            <Route
+              path="/tech"
+              element={<TechPage />}
             />
             
             {/* Fallback for unknown routes */}
