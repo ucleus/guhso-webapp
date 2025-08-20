@@ -23,7 +23,7 @@ const Navbar = () => {
   const navLinks = [
     { href: '/episodes', label: 'Episodes' },
     { href: '/blog', label: 'It Guhso' },
-    { href: '#tech', label: 'Tech' },
+    { href: '/tech', label: 'Tech' },
     { href: '#merch', label: 'Merch'},
     { href: '#advertise', label: 'Advertise' },
     { href: '/about', label: 'What Is Guhso'}
