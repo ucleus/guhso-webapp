@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\AdvertisementController;
+use App\Http\Controllers\Api\ProductController as ApiProductController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\MailingListController;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +48,10 @@ Route::prefix('v1')->group(function () {
 
     // Mailing list
     Route::post('/mailing-list', [MailingListController::class, 'store']);
+    
+    // Products
+    Route::get('/products', [ApiProductController::class, 'index']);
+    Route::get('/products/{slug}', [ApiProductController::class, 'show']);
     
     // Authentication endpoints
     Route::post('/register', [AuthController::class, 'register']);
