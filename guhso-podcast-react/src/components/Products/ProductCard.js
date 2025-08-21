@@ -31,13 +31,19 @@ const ProductCard = ({ product }) => {
   const imageUrl = getImageUrl();
   const price = product.base_price ?? product.price;
 
+  // Format price safely
+  const formatPrice = (price) => {
+    const numPrice = parseFloat(price);
+    return isNaN(numPrice) ? '0.00' : numPrice.toFixed(2);
+  };
+
   return (
     <div className="product-card">
       <Link to={`/merch/${product.slug}`}>
         <img src={imageUrl} alt={product.name} className="product-image" />
         <h3>{product.name}</h3>
-        {price !== undefined && (
-          <p className="price">{'$'}{price.toFixed(2)}</p>
+        {price !== undefined && price !== null && (
+          <p className="price">{'$'}{formatPrice(price)}</p>
         )}
         {product.inventory_badge && (
           <span className="inventory-badge">{product.inventory_badge}</span>
