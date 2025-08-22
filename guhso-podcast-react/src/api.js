@@ -6,8 +6,11 @@
 // Some environments may supply a base URL without the `/v1` path
 // segment. To avoid 404s from missing the version prefix, normalize
 // the base so `API_URL` always includes `/v1` exactly once.
-const API_BASE =
-  process.env.REACT_APP_API_URL || 'https://kjprocleaning.com/api';
+const DEFAULT_API_BASE = 'https://kjprocleaning.com/api';
+
+// Remove any trailing slashes so we don't end up with double slashes when
+// appending the version segment below.
+const API_BASE = (process.env.REACT_APP_API_URL || DEFAULT_API_BASE).replace(/\/+$/, '');
 
 export const API_URL = API_BASE.endsWith('/v1') ? API_BASE : `${API_BASE}/v1`;
 
@@ -65,9 +68,15 @@ export async function fetchHeroEpisode() {
     throw new Error(`Failed to fetch hero episode: ${res.status}`);
   }
   const data = await res.json();
-  
+
+  // API may return the episode directly or wrapped in a `data` property
+  const episode = data && typeof data === 'object' && 'data' in data ? data.data : data;
+  if (!episode) {
+    throw new Error('No hero episode returned from API');
+  }
+
   // Process hero episode data
-  return processEpisodeData(data);
+  return processEpisodeData(episode);
 }
 
 
