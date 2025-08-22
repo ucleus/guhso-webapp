@@ -3,6 +3,7 @@
 @section('title', 'Products - Guhso Dashboard')
 
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="mb-8">
     <div class="flex justify-between items-center mb-6">
         <div>
@@ -241,7 +242,7 @@ function deleteProduct(productId, productName) {
         const csrfToken = document.createElement('input');
         csrfToken.type = 'hidden';
         csrfToken.name = '_token';
-        csrfToken.value = '{{ csrf_token() }}';
+        csrfToken.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         const methodField = document.createElement('input');
         methodField.type = 'hidden';
