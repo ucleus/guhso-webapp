@@ -14,18 +14,31 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('variants.color', 'variants.size', 'images')->get();
-        $totalProducts = $products->count();
-        $outOfStock = $products->filter(fn($p) => $p->variants->sum('stock_qty') <= 0)->count();
+        try {
+            $products = Product::with('variants.color', 'variants.size', 'images')->get();
+            $totalProducts = $products->count();
+            $outOfStock = $products->filter(fn($p) => $p->variants->sum('stock_qty') <= 0)->count();
 
-        return view('dashboard.products.index', compact('products', 'totalProducts', 'outOfStock'));
+            return view('dashboard.products.index', compact('products', 'totalProducts', 'outOfStock'));
+        } catch (\Exception $e) {
+            return view('dashboard.products.index', [
+                'products' => collect([]),
+                'totalProducts' => 0,
+                'outOfStock' => 0,
+                'error' => 'Database connection error. Please check your configuration.'
+            ]);
+        }
     }
 
     public function create()
     {
-        $colors = Color::all();
-        $sizes = Size::where('active', true)->orderBy('sort_order')->get();
-        return view('dashboard.products.create', compact('colors', 'sizes'));
+        try {
+            $colors = Color::all();
+            $sizes = Size::where('active', true)->orderBy('id')->get();
+            return view('dashboard.products.create', compact('colors', 'sizes'));
+        } catch (\Exception $e) {
+            return redirect()->route('dashboard.products')->with('error', 'Database connection error. Please check your configuration.');
+        }
     }
 
     public function store(Request $request)
@@ -85,19 +98,25 @@ class ProductController extends Controller
                 if (isset($imageData['file']) && $imageData['file'] instanceof \Illuminate\Http\UploadedFile) {
                     $file = $imageData['file'];
                     $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                    $path = $file->storeAs('products', $filename, 'public');
+                    // Store directly in public_html/uploads for shared hosting
+                    $publicPath = public_path('uploads/products');
+                    if (!file_exists($publicPath)) {
+                        mkdir($publicPath, 0755, true);
+                    }
+                    $file->move($publicPath, $filename);
+                    $path = 'uploads/products/' . $filename;
                     
                     ProductImage::create([
                         'product_id' => $product->id,
                         'alt_text' => $imageData['alt_text'] ?? null,
                         'sort_order' => $imageData['sort_order'] ?? 0,
                         'storage_key' => $path,
-                        'cdn_url_original' => '/storage/' . $path,
+                        'cdn_url_original' => "/$path",
                         // For now, using the same URL for all sizes - could be enhanced with image resizing
-                        'cdn_url_lg' => '/storage/' . $path,
-                        'cdn_url_md' => '/storage/' . $path,
-                        'cdn_url_sm' => '/storage/' . $path,
-                        'cdn_url_thumb' => '/storage/' . $path,
+                        'cdn_url_lg' => "/$path",
+                        'cdn_url_md' => "/$path",
+                        'cdn_url_sm' => "/$path",
+                        'cdn_url_thumb' => "/$path",
                     ]);
                 }
             }
@@ -110,7 +129,7 @@ class ProductController extends Controller
     {
         $product->load('variants.color', 'variants.size');
         $colors = Color::all();
-        $sizes = Size::where('active', true)->orderBy('sort_order')->get();
+        $sizes = Size::where('active', true)->orderBy('id')->get();
         return view('dashboard.products.edit', compact('product', 'colors', 'sizes'));
     }
 
@@ -182,6 +201,16 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
+        // Delete product images from filesystem
+        foreach ($product->images as $image) {
+            $imagePath = public_path($image->storage_key);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+        
+        // Delete related records (cascading should handle this, but being explicit)
+        $product->images()->delete();
         $product->variants()->delete();
         $product->delete();
 

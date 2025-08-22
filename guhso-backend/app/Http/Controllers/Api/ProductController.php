@@ -51,12 +51,18 @@ class ProductController extends Controller
                             'color' => [
                                 'id' => $variant->color->id,
                                 'name' => $variant->color->name,
-                                'hex_code' => $variant->color->hex_code,
+                                // New canonical key
+                                'hex' => $variant->color->hex,
+                                // Legacy alias for frontend compatibility
+                                'hex_code' => $variant->color->hex,
                             ],
                             'size' => [
                                 'id' => $variant->size->id,
-                                'name' => $variant->size->name,
-                                'abbreviation' => $variant->size->abbreviation,
+                                // New canonical key
+                                'label' => $variant->size->label,
+                                // Legacy aliases for frontend compatibility
+                                'name' => $variant->size->label,
+                                'abbreviation' => null,
                             ]
                         ];
                     }),
@@ -119,12 +125,18 @@ class ProductController extends Controller
                     'color' => [
                         'id' => $variant->color->id,
                         'name' => $variant->color->name,
-                        'hex_code' => $variant->color->hex_code,
+                        // New canonical key
+                        'hex' => $variant->color->hex,
+                        // Legacy alias for frontend compatibility
+                        'hex_code' => $variant->color->hex,
                     ],
                     'size' => [
                         'id' => $variant->size->id,
-                        'name' => $variant->size->name,
-                        'abbreviation' => $variant->size->abbreviation,
+                        // New canonical key
+                        'label' => $variant->size->label,
+                        // Legacy aliases for frontend compatibility
+                        'name' => $variant->size->label,
+                        'abbreviation' => null,
                     ]
                 ];
             }),
